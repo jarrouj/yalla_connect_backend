@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Api\ApiController;
 use App\Http\Controllers\API\BalanceController;
 use App\Http\Controllers\AuthApi\AuthApiController;
 use Illuminate\Http\Request;
@@ -29,3 +30,9 @@ Route::middleware('auth:sanctum')->get('/user-balance', function (Request $reque
         'balance' => $request->user()->balance
     ]);
 });
+
+
+//Api routes
+Route::get('/categories', [ApiController::class, 'getAllCategories']);
+Route::get('/subcategories', [ApiController::class, 'getAllSubcategories']);
+Route::get('/products', [ApiController::class, 'getAllProducts']);
