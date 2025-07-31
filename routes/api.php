@@ -1,0 +1,31 @@
+<?php
+
+use App\Http\Controllers\API\BalanceController;
+use App\Http\Controllers\AuthApi\AuthApiController;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Route;
+
+Route::get('/user', function (Request $request) {
+    return $request->user();
+})->middleware('auth:sanctum');
+
+//Authentication routes
+Route::post('/register', [AuthApiController::class, 'register']);
+Route::post('/verify-email', [AuthApiController::class, 'verifyEmail']);
+Route::post('/login', [AuthApiController::class, 'login']);
+Route::post('/forgot-password', [AuthApiController::class, 'forgotPassword']);
+
+
+//Balance routes
+Route::middleware('auth:sanctum')->group(function () {
+    Route::post('/save-fcm-token', [BalanceController::class, 'saveFcmToken']);
+    Route::post('/add-balance', [BalanceController::class, 'addBalance']);
+});
+
+
+//check user balance
+Route::middleware('auth:sanctum')->get('/user-balance', function (Request $request) {
+    return response()->json([
+        'balance' => $request->user()->balance
+    ]);
+});

@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    @include('admin.css')
+</head>
+
+<body class="g-sidenav-show   bg-gray-100">
+
+    @include('admin.sidebar')
+    <main class="main-content position-relative border-radius-lg ">
+        <!-- Navbar -->
+        @include('admin.navbar')
+        <!-- End Navbar -->
+        <div class="container-fluid py-4">
+            <div class="row">
+                <div class="col-12">
+                    <div class="card mb-4">
+                        <div class="card-header pb-0">
+                            <h6>All Users</h6>
+                        </div>
+
+                        {{-- Search --}}
+                        <div class="row">
+                            <div class="col-12">
+                                <div class="d-block w-50 m-auto">
+                                    <form action="{{ url('/admin/search_user') }}" method="POST">
+                                        @csrf
+                                        <p for="" class="text-center form-label">Search Names, Emails or Phone
+                                            Number
+                                        </p>
+
+                                        <div class="d-flex justify-content-center">
+
+                                            <div class="input-group mb-3 w-75">
+
+                                                <input type="text" name="query" class="form-control"
+                                                    placeholder="example@gmail.com" style="height: 41px "
+                                                    id="searchInput">
+
+
+                                            </div>
+
+                                        </div>
+
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="card-body px-0 pt-0 pb-2">
+                            <div class="table-responsive p-0">
+                                <table class="table align-items-center mb-0">
+                                    <thead>
+                                        <tr>
+                                            <th
+                                                class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
+                                                Full Name/Email
+                                            </th>
+                                            <th
+                                                class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">
+                                                Role
+                                            </th>
+                                            <th
+                                                class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
+                                                Phone Number
+                                            </th>
+
+                                            <th
+                                                class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
+                                                User Balance
+                                            </th>
+                                            {{-- <th
+                                                class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
+                                                Address
+                                            </th> --}}
+                                            {{-- <th
+                                                class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
+                                                Points
+                                            </th> --}}
+                                            <th
+                                                class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
+                                                First Visit
+                                            </th>
+                                            {{-- <th
+                                                class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
+                                                Last Seen
+                                            </th> --}}
+
+                                            <th class="text-secondary opacity-7"></th>
+                                            <th class="text-secondary opacity-7"></th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="tbody">
+                                        @forelse ($user as $data)
+                                        <tr>
+                                            <td>
+                                                <div class="d-flex px-2 py-1">
+                                                    <div class="d-flex flex-column justify-content-center">
+                                                        <h6 class="mb-0 text-sm">{{ $data->first_name }} {{
+                                                            $data->last_name }}</h6>
+                                                        <p class="text-xs text-secondary mb-0">
+                                                            {{ $data->email }}
+                                                        </p>
+                                                    </div>
+                                                </div>
+                                            </td>
+                                            <td class="text-sm">
+
+                                                @if ($data->usertype == 1)
+                                                <span class="badge badge-sm bg-gradient-success">Admin</span>
+                                                @else
+                                                <span class="badge badge-sm bg-gradient-secondary">Customer</span>
+                                                @endif
+
+                                            </td>
+                                            {{-- <td class="align-middle text-center text-sm">
+                                                @if (Cache::has('user-is-online-' . $data->id))
+                                                <span class="badge badge-sm bg-gradient-success">Online</span>
+                                                @else
+                                                <span class="text-secondary">Offline</span>
+                                                @endif
+                                            </td> --}}
+                                            {{--
+                                            <td class="align-middle text-center">
+                                                <span class="text-secondary text-xs font-weight-bold">{{ $data->address
+                                                    }}</span>
+                                            </td> --}}
+                                            <td class="align-middle text-center">
+                                                <span class="text-secondary text-xs font-weight-bold">{{ $data->phone
+                                                    }}</span>
+                                            </td>
+                                            <td class="align-middle text-center">
+                                                <span class="text-secondary text-xs font-weight-bold">{{ $data->balance
+                                                    }}</span>
+                                            </td>
+                                            <td class="align-middle text-center">
+                                                <span class="text-secondary text-xs font-weight-bold">
+                                                    {{ \Carbon\Carbon::parse($data->created_at)->format('F j, Y - g:i
+                                                    A') }}
+                                                </span>
+                                            </td>
+
+                                            {{-- <td class="align-middle text-center">
+                                                <span class="text-secondary text-xs font-weight-bold">{{
+                                                    $data->last_seen }}</span>
+                                            </td> --}}
+                                            <td class="align-middle">
+                                                <a href="{{ url('admin/update_user', $data->id) }}"
+                                                    class="text-success font-weight-bold text-xs" data-toggle="tooltip"
+                                                    data-original-title="Edit user">
+                                                    Edit <i class="bi bi-pencil"></i>
+                                                </a>
+                                            </td>
+                                            <td class="align-middle">
+                                                <a href="{{ url('admin/delete_user', $data->id) }}"
+                                                    class="text-danger font-weight-bold text-xs" data-toggle="tooltip"
+                                                    data-original-title="Edit user"
+                                                    onclick="return confirm('Are you sure you want to delete this User?')">
+                                                    Delete
+                                                    <i class="bi bi-trash"></i>
+                                                </a>
+                                            </td>
+                                        </tr>
+                                        @empty
+                                        <tr>
+                                            <td colspan="16">
+                                                <p class="text-xs text-center text-danger font-weight-bold mb-0">
+                                                    No Data !
+                                                </p>
+                                            </td>
+                                        </tr>
+                                        @endforelse
+                                    </tbody>
+                                </table>
+                                {{ $user->render('admin.pagination') }}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            @include('admin.footer')
+        </div>
+    </main>
+
+    @include('admin.script')
+
+
+    <script>
+        $(document).ready(function() {
+            $('#searchInput').on('keyup', function() {
+                var searchInput = $('#searchInput').val();
+
+                $.ajax({
+                    url: '{{ url('admin/search_user') }}',
+                    type: 'get',
+                    data: {
+                        query: searchInput
+                    },
+                    success: function(response) {
+                        var usersHtml = '';
+                        response.forEach(function(user) {
+                            var userType = user.usertype == 1 ? 'Admin' : 'Customer';
+                            var onlineStatus = user.online ? 'Online' : 'Offline';
+                            const createdAt = new Date(user.created_at).toLocaleString('en-US', {
+    month: 'long',
+    day: 'numeric',
+    year: 'numeric',
+    hour: 'numeric',
+    minute: '2-digit',
+    hour12: true,
+});
+
+                            usersHtml += `
+                                <tr>
+                                    <td>
+                                        <div class="d-flex px-2 py-1">
+                                            <div class="d-flex flex-column justify-content-center">
+                                                <h6 class="mb-0 text-sm">${user.first_name} ${user.last_name}</h6>
+                                                <p class="text-xs text-secondary mb-0">${user.email}</p>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td class=" text-sm">
+                                        <span class="badge badge-sm ${user.usertype == 1 ? 'bg-gradient-success' : 'bg-gradient-secondary'}">${userType}</span>
+                                    </td>
+
+                                    <td class="align-middle text-center">
+                                        <span class="text-secondary text-xs font-weight-bold">${user.phone}</span>
+                                    </td>
+                                    <td class="align-middle text-center">
+                                        <span class="text-secondary text-xs font-weight-bold">${user.balance}</span>
+                                    </td>
+                                    <td class="align-middle text-center">
+                                       <span class="text-secondary text-xs font-weight-bold">${createdAt}</span>
+                                    </td>
+
+                                    <td class="align-middle">
+                                        <a href="{{ url('admin/update_user') }}/${user.id}" class="text-success font-weight-bold text-xs" data-toggle="tooltip" data-original-title="Edit user">Edit <i class="bi bi-pencil"></i></a>
+                                    </td>
+                                    <td class="align-middle">
+                                        <a href="{{ url('admin/delete_user') }}/${user.id}" class="text-danger font-weight-bold text-xs" data-toggle="tooltip" data-original-title="Delete user" onclick="return confirm('Are you sure you want to delete this User?')">Delete <i class="bi bi-trash"></i></a>
+                                    </td>
+                                </tr>
+                            `;
+                        });
+                        $('tbody').html(usersHtml);
+                    },
+                    error: function(error) {
+                        console.log(error);
+                    }
+                });
+            });
+        });
+    </script>
+
+
+</body>
+
+</html>
