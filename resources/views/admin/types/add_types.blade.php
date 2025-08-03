@@ -11,7 +11,7 @@
                 <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
             </div>
 
-            <form action="{{ url('/admin/add_subcategory') }}" method="POST">
+            <form action="{{ url('/admin/add_subcategory') }}" method="POST" enctype="multipart/form-data">
                 @csrf
                 <div class="modal-body">
 
@@ -30,6 +30,12 @@
                                 <option value="{{ $cat->id }}">{{ $cat->name }}</option>
                             @endforeach
                         </select>
+                    </div>
+
+                    <!-- Subcategory Image -->
+                    <div class="mb-3">
+                        <label class="form-label">Subcategory Image</label>
+                        <input type="file" name="image" class="form-control" accept="image/*">
                     </div>
 
                 </div>

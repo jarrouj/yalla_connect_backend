@@ -9,7 +9,7 @@ use Illuminate\Http\Request;
 
 class SubcategoryController extends Controller
 {
-     public function index()
+    public function index()
     {
         $subcategories = Subcategory::with('category')->paginate(10);
         $categories = Category::all();
@@ -21,12 +21,19 @@ class SubcategoryController extends Controller
     {
         $request->validate([
             'name' => 'required|string|max:255',
-            'category_id' => 'required|exists:categories,id'
+            'category_id' => 'required|exists:categories,id',
+            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048'
         ]);
+
+        $imagePath = null;
+        if ($request->hasFile('image')) {
+            $imagePath = $request->file('image')->store('subcategory_images', 'public');
+        }
 
         Subcategory::create([
             'name' => $request->name,
             'category_id' => $request->category_id,
+            'image' => $imagePath,
         ]);
 
         return redirect()->back()->with('success', 'Subcategory added successfully.');
@@ -38,16 +45,25 @@ class SubcategoryController extends Controller
 
         $request->validate([
             'name' => 'required|string|max:255',
-            'category_id' => 'required|exists:categories,id'
+            'category_id' => 'required|exists:categories,id',
+            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048'
         ]);
+
+        $imagePath = $subcategory->image;
+
+        if ($request->hasFile('image')) {
+            $imagePath = $request->file('image')->store('subcategory_images', 'public');
+        }
 
         $subcategory->update([
             'name' => $request->name,
             'category_id' => $request->category_id,
+            'image' => $imagePath,
         ]);
 
         return redirect()->back()->with('success', 'Subcategory updated successfully.');
     }
+
 
     public function destroy($id)
     {

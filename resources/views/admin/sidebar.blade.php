@@ -100,7 +100,19 @@
                 </a>
             </li>
 
-              <li class="nav-item">
+            <li class="nav-item">
+                <a class="nav-link rounded-3 {{ 'admin/show_specialties' == request()->path() ? 'main-color' : '' }}"
+                    href="{{ url('/admin/show_specialties') }}">
+                    <div
+                        class="icon icon-shape icon-sm border-radius-md text-center me-2 d-flex align-items-center justify-content-center">
+                        <i class="bi bi-boxes text-primary text-sm opacity-10"></i>
+
+                    </div>
+                    <span class="nav-link-text ms-1">Specialty</span>
+                </a>
+            </li>
+
+            <li class="nav-item">
                 <a class="nav-link rounded-3 {{ 'admin/show_add_balance' == request()->path() ? 'main-color' : '' }}"
                     href="{{ url('/admin/show_add_balance') }}">
                     <div
@@ -283,7 +295,7 @@
             {{-- Drop Down End --}}
 
 
-{{--
+            {{--
             <li class="nav-item">
                 <a class="nav-link rounded-3 {{ 'admin/show_order' == request()->path() ? 'main-color' : '' }}"
                     href="{{ url('/admin/show_order') }}">

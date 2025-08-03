@@ -3,6 +3,7 @@
 use App\Http\Controllers\Admin\CategoryController;
 use App\Http\Controllers\Admin\CmsController;
 use App\Http\Controllers\Admin\ProductController;
+use App\Http\Controllers\Admin\SpecialtyController;
 use App\Http\Controllers\Admin\SubcategoryController;
 use App\Http\Controllers\Admin\UserController;
 use Illuminate\Support\Facades\Route;
@@ -54,6 +55,12 @@ Route::prefix('/admin')->middleware('auth')->group(function () {
     Route::post('/update_product_confirm/{id}', [ProductController::class, 'update_product_confirm']);
     Route::get('/delete_product/{id}', [ProductController::class, 'delete_product']);
     Route::get('/search_product', [ProductController::class, 'search_product']);
+
+    // {{ Specialty }}
+    Route::get('/show_specialties', [SpecialtyController::class, 'index']);
+    Route::post('/add_specialty', [SpecialtyController::class, 'store']);
+    Route::post('/update_specialty/{id}', [SpecialtyController::class, 'update']);
+    Route::delete('/delete_specialty/{id}', [SpecialtyController::class, 'destroy']);
 
     // // {{ Social }}
     // Route::get('/show_social',[SocialController::class,'show_social']);

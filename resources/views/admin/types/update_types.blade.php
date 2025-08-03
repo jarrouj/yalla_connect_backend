@@ -10,9 +10,9 @@
                 <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
             </div>
 
-            <form action="{{ url('/admin/update_subcategory/' . $subcategory->id) }}" method="POST">
+            <form action="{{ url('/admin/update_subcategory/' . $subcategory->id) }}" method="POST" enctype="multipart/form-data">
                 @csrf
-                @method('POST') {{-- Use POST or PUT based on your route --}}
+                @method('POST')
                 <div class="modal-body">
 
                     <!-- Subcategory Name -->
@@ -31,6 +31,19 @@
                                 </option>
                             @endforeach
                         </select>
+                    </div>
+
+                    <!-- Subcategory Image -->
+                    <div class="mb-3">
+                        <label class="form-label">Subcategory Image</label>
+                        <input type="file" name="image" class="form-control" accept="image/*">
+
+                        @if ($subcategory->image)
+                            <div class="mt-2">
+                                <small>Current Image:</small><br>
+                                <img src="{{ asset('storage/' . $subcategory->image) }}" alt="Current Image" style="width: 60px; height: 60px; object-fit: cover; border-radius: 5px;">
+                            </div>
+                        @endif
                     </div>
 
                 </div>
