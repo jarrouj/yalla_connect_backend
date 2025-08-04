@@ -53,6 +53,16 @@
 
                                                 Specialty Description
                                             </th>
+                                            <th
+                                                class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
+
+                                                Price
+                                            </th>
+                                            <th
+                                                class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
+
+                                                Status
+                                            </th>
 
                                             <th class="text-secondary opacity-7"></th>
                                             <th class="text-secondary opacity-7"></th>
@@ -63,7 +73,9 @@
                                         <tr class="text-center">
 
                                             <td>
-                                              <img src="{{ asset('storage/' . $data->image) }}" alt="Specialty Image" width="60px" style="object-fit: cover; height: 60px; border-radius: 6px;">
+                                                <img src="{{ asset('storage/' . $data->image) }}" alt="Specialty Image"
+                                                    width="60px"
+                                                    style="object-fit: cover; height: 60px; border-radius: 6px;">
 
                                             </td>
 
@@ -80,13 +92,26 @@
                                                 </p>
                                             </td>
 
+                                            <td class="align-middle">
+                                                <p class="text-xs font-weight-bold mb-0">
+                                                    ${{ number_format($data->price, 2) }}
+                                                </p>
+                                            </td>
+                                            <td class="align-middle text-center">
+                                                <span class="d-inline-block text-xs font-weight-bold rounded px-2 py-1 text-white
+                                                     {{ $data->is_active ? 'bg-success' : 'bg-danger' }}" style="min-width: 80px;">
+                                                    {{ $data->is_active ? 'Active' : 'Inactive' }}
+                                                </span>
+                                            </td>
+
 
                                             <td class="align-middle">
                                                 @include('admin.specialty.update_specialty')
                                             </td>
 
                                             <td class="align-middle">
-                                                <a href="{{ url('/admin/delete_specialty/' . $data->id) }}" onclick="deletespecialty({{ $data->id }})"
+                                                <a href="{{ url('/admin/delete_specialty/' . $data->id) }}"
+                                                    onclick="deletespecialty({{ $data->id }})"
                                                     class="text-danger font-weight-bold text-xs" data-toggle="tooltip"
                                                     data-original-title="Delete specialty">
                                                     Delete
