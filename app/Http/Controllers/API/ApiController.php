@@ -2,12 +2,13 @@
 
 namespace App\Http\Controllers\Api;
 
-use App\Http\Controllers\Controller;
-use App\Models\Category;
 use App\Models\Product;
+use App\Models\Category;
+use App\Models\Specialty;
 use App\Models\Subcategory;
-use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Illuminate\Http\JsonResponse;
+use App\Http\Controllers\Controller;
 
 class ApiController extends Controller
 {
@@ -67,4 +68,25 @@ class ApiController extends Controller
             ], 500);
         }
     }
+
+    public function getAllSpecialties(): JsonResponse
+    {
+        try {
+            $Specialties = Specialty::all();
+
+            return response()->json([
+                'status' => true,
+                'message' => 'Specialties fetched successfully.',
+                'data' => $Specialties
+            ], 200);
+        } catch (\Exception $e) {
+            return response()->json([
+                'status' => false,
+                'message' => 'Failed to fetch Specialties.',
+                'error' => $e->getMessage()
+            ], 500);
+        }
+    }
+
+
 }

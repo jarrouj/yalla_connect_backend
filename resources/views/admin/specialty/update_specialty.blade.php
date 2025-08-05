@@ -29,7 +29,7 @@
                     <!-- Description -->
                     <div class="mb-3">
                         <label class="form-label">Description</label>
-                        <textarea name="description" class="form-control" rows="3" required>{{ $data->description }}</textarea>
+                        <textarea name="description" class="form-control" rows="3">{{ $data->description }}</textarea>
                     </div>
 
                     <!-- Current Image Preview -->

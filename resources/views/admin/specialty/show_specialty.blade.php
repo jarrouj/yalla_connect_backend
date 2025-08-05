@@ -17,7 +17,7 @@
                 <div class="col-12">
                     <div class="card mb-4">
                         <div class="card-header pb-0">
-                            <h6>Categories</h6>
+                            <h6>Specialties</h6>
                         </div>
 
                         <div class="row mb-3">
