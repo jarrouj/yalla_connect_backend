@@ -6,6 +6,7 @@ use App\Http\Controllers\Api\ApiController;
 
 use App\Http\Controllers\CheckoutController;
 use App\Http\Controllers\API\BalanceController;
+use App\Http\Controllers\AuthApi\AuthApiController;
 
 Route::get('/user', function (Request $request) {
     return $request->user();
