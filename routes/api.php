@@ -3,14 +3,9 @@
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\ApiController;
-use App\Http\Controllers\API\BalanceController;
-use App\Http\Controllers\AuthApi\AuthApiController;
-<<<<<<< HEAD
-=======
+
 use App\Http\Controllers\CheckoutController;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Route;
->>>>>>> c23bb505797f9b86caf8e59cdf9b02206839ff1f
+use App\Http\Controllers\API\BalanceController;
 
 Route::get('/user', function (Request $request) {
     return $request->user();
