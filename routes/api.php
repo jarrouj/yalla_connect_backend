@@ -44,9 +44,5 @@ Route::middleware('auth:sanctum')->get('/user-balance', function (Request $reque
 Route::get('/categories', [ApiController::class, 'getAllCategories']);
 Route::get('/subcategories', [ApiController::class, 'getAllSubcategories']);
 Route::get('/products', [ApiController::class, 'getAllProducts']);
-<<<<<<< HEAD
 Route::get('/specialties', [ApiController::class, 'getAllSpecialties']);
-=======
 
-
->>>>>>> c23bb505797f9b86caf8e59cdf9b02206839ff1f
