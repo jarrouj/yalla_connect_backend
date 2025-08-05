@@ -19,7 +19,9 @@ class SpecialtyController extends Controller
         $request->validate([
             'name' => 'required|string|max:255',
             'description' => 'nullable|string',
-            'image' => 'nullable|image|max:2048'
+            'image' => 'nullable|image|max:2048',
+            'price' => 'required|numeric|min:0',
+            'is_active' => 'boolean',
         ]);
 
         $imagePath = $request->file('image')?->store('specialty_images', 'public');
@@ -28,7 +30,10 @@ class SpecialtyController extends Controller
             'name' => $request->name,
             'description' => $request->description,
             'image' => $imagePath,
+            'price' => $request->price,
+            'is_active' => $request->is_active ?? true,
         ]);
+
 
         return redirect()->back()->with('success', 'Specialty added successfully.');
     }
@@ -40,7 +45,9 @@ class SpecialtyController extends Controller
         $request->validate([
             'name' => 'required|string|max:255',
             'description' => 'nullable|string',
-            'image' => 'nullable|image|max:2048'
+            'image' => 'nullable|image|max:2048',
+            'price' => 'required|numeric|min:0',
+            'is_active' => 'boolean',
         ]);
 
         if ($request->hasFile('image')) {
@@ -51,6 +58,8 @@ class SpecialtyController extends Controller
             'name' => $request->name,
             'description' => $request->description,
             'image' => $specialty->image,
+            'price' => $request->price,
+            'is_active' => $request->is_active ?? true,
         ]);
 
         return redirect()->back()->with('success', 'Specialty updated successfully.');

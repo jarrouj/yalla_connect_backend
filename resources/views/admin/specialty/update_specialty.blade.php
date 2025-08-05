@@ -41,6 +41,22 @@
                         </div>
                     @endif
 
+                    <!-- Price -->
+                    <div class="mb-3">
+                        <label class="form-label">Price</label>
+                        <input type="number" name="price" class="form-control"
+                               step="0.01" min="0" value="{{ $data->price }}" required>
+                    </div>
+                    
+                    <!-- Status -->
+                    <div class="mb-3">
+                        <label class="form-label">Status</label>
+                        <select name="is_active" class="form-select">
+                            <option value="1" {{ $data->is_active ? 'selected' : '' }}>Active</option>
+                            <option value="0" {{ !$data->is_active ? 'selected' : '' }}>Inactive</option>
+                        </select>
+                    </div>
+
                     <!-- New Image Upload -->
                     <div class="mb-3">
                         <label class="form-label">Change Image (optional)</label>

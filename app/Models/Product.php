@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Product extends Model
 {
-     protected $fillable = [
+    protected $fillable = [
         'category_id',
         'type',
         'title',
@@ -28,4 +28,13 @@ class Product extends Model
         return $this->belongsTo(Subcategory::class);
     }
 
+    public function checkouts()
+    {
+        return $this->hasMany(Checkout::class);
+    }
+
+    public function histories()
+    {
+        return $this->hasMany(History::class);
+    }
 }

@@ -26,6 +26,20 @@
                         <label class="form-label">Description</label>
                         <textarea name="description" class="form-control" rows="3" ></textarea>
                     </div>
+                    <!-- Specialty Price -->
+                    <div class="mb-3">
+                        <label class="form-label">Price</label>
+                        <input type="number" name="price" class="form-control" step="0.01" min="0"  required>
+                    </div>
+
+                    <!-- Specialty Status -->
+                    <div class="mb-3">
+                        <label class="form-label">Status</label>
+                        <select name="is_active" class="form-select">
+                            <option value="1" selected>Active</option>
+                            <option value="0">Inactive</option>
+                        </select>
+                    </div>
 
                     <!-- Image Upload -->
                     <div class="mb-3">

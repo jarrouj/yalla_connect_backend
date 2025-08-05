@@ -5,6 +5,12 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\ApiController;
 use App\Http\Controllers\API\BalanceController;
 use App\Http\Controllers\AuthApi\AuthApiController;
+<<<<<<< HEAD
+=======
+use App\Http\Controllers\CheckoutController;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Route;
+>>>>>>> c23bb505797f9b86caf8e59cdf9b02206839ff1f
 
 Route::get('/user', function (Request $request) {
     return $request->user();
@@ -21,6 +27,8 @@ Route::post('/forgot-password', [AuthApiController::class, 'forgotPassword']);
 Route::middleware('auth:sanctum')->group(function () {
     Route::post('/save-fcm-token', [BalanceController::class, 'saveFcmToken']);
     Route::post('/add-balance', [BalanceController::class, 'addBalance']);
+    Route::post('/checkout/{productId}', [CheckoutController::class, 'checkoutProduct']);
+    Route::get('/history', [CheckoutController::class, 'userHistory']);
 });
 
 
@@ -36,4 +44,9 @@ Route::middleware('auth:sanctum')->get('/user-balance', function (Request $reque
 Route::get('/categories', [ApiController::class, 'getAllCategories']);
 Route::get('/subcategories', [ApiController::class, 'getAllSubcategories']);
 Route::get('/products', [ApiController::class, 'getAllProducts']);
+<<<<<<< HEAD
 Route::get('/specialties', [ApiController::class, 'getAllSpecialties']);
+=======
+
+
+>>>>>>> c23bb505797f9b86caf8e59cdf9b02206839ff1f
