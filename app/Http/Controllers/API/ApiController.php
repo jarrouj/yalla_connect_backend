@@ -88,5 +88,26 @@ class ApiController extends Controller
         }
     }
 
+    public function getProductsBySubcategory($id)
+{
+    try {
+        $products = Product::with(['category', 'subcategory'])
+            ->where('subcategory_id', $id)
+            ->get();
+
+        return response()->json([
+            'status' => true,
+            'message' => 'Products fetched successfully.',
+            'data' => $products
+        ]);
+    } catch (\Exception $e) {
+        return response()->json([
+            'status' => false,
+            'message' => 'Failed to fetch products.',
+            'error' => $e->getMessage()
+        ], 500);
+    }
+}
+
 
 }
