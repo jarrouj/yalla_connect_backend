@@ -20,5 +20,6 @@ class Checkout extends Model
         'product_id',
         'title',
         'price',
+        'user_id'
     ];
 }

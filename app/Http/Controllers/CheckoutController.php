@@ -2,9 +2,9 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Checkout;
 use App\Models\History;
 use App\Models\Product;
+use App\Models\Checkout;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -15,6 +15,12 @@ class CheckoutController extends Controller
         try {
             $product = Product::findOrFail($productId);
             $user = Auth::user();
+
+            if (!$user) {
+                return response()->json([
+                    'message' => 'Unauthenticated request.',
+                ], 401);
+            }
 
             // Save to checkouts
             $checkout = Checkout::create([

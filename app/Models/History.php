@@ -20,5 +20,6 @@ class History extends Model
     protected $fillable = [
         'product_id',
         'type',
+        'user_id'
     ];
 }
