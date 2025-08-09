@@ -2,11 +2,11 @@
 
 namespace App\Http\Controllers\Admin;
 
-use App\Http\Controllers\Controller;
-use App\Models\Category;
 use App\Models\Product;
+use App\Models\Category;
 use App\Models\Subcategory;
 use Illuminate\Http\Request;
+use App\Http\Controllers\Controller;
 
 class ProductController extends Controller
 {
@@ -38,6 +38,9 @@ class ProductController extends Controller
             $request->file('image')->move(public_path('images/products'), $imageName);
         }
 
+        $subcategory = \App\Models\Subcategory::findOrFail($request->subcategory_id);
+        $type = $subcategory->name;
+
         Product::create([
             'category_id' => $request->category_id,
             'subcategory_id' => $request->subcategory_id,
@@ -46,10 +49,14 @@ class ProductController extends Controller
             'description' => $request->description,
             'price' => $request->price,
             'image' => $imageName,
+            'type' => $type,
+
         ]);
 
         return redirect()->back()->with('message', 'Product added successfully.');
     }
+
+
 
     private function getVoucherSubcategoryId()
     {

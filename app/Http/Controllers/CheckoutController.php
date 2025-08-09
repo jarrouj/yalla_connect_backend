@@ -6,6 +6,7 @@ use App\Models\History;
 use App\Models\Product;
 use App\Models\Checkout;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
 
 class CheckoutController extends Controller
@@ -22,25 +23,46 @@ class CheckoutController extends Controller
                 ], 401);
             }
 
-            // Save to checkouts
-            $checkout = Checkout::create([
-                'product_id' => $product->id,
-                'user_id' => $user->id,
-                'title' => $product->title,
-                'price' => $product->price,
-            ]);
+            if ($user->balance < $product->price) {
+                return response()->json([
+                    'message' => 'Insufficient balance.',
+                    'error' => 'Your balance is less than the product price.',
+                ], 403);
+            }
 
-            // Save to histories
-            $history = History::create([
-                'product_id' => $product->id,
-                'user_id' => $user->id,
-                'type' => $product->type,
-            ]);
+            // Use DB transaction to make all steps atomic
+            $result = DB::transaction(function () use ($user, $product) {
+                // Deduct balance
+                $user->balance -= $product->price;
+                $user->save();
+
+                // Save to checkouts
+                $checkout = Checkout::create([
+                    'product_id' => $product->id,
+                    'user_id' => $user->id,
+                    'title' => $product->title,
+                    'price' => $product->price,
+                ]);
+
+                // Save to histories
+                $history = History::create([
+                    'product_id' => $product->id,
+                    'user_id' => $user->id,
+                    'type' => $product->type,
+                ]);
+
+                return [
+                    'checkout' => $checkout,
+                    'history' => $history,
+                    'new_balance' => $user->balance,
+                ];
+            });
 
             return response()->json([
-                'message' => 'Checkout successful and history saved.',
-                'checkout' => $checkout,
-                'history' => $history
+                'message' => 'Checkout successful. Balance deducted and history saved.',
+                'checkout' => $result['checkout'],
+                'history' => $result['history'],
+                'new_balance' => $result['new_balance'],
             ]);
 
         } catch (\Exception $e) {
