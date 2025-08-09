@@ -42,3 +42,4 @@ Route::get('/subcategories', [ApiController::class, 'getAllSubcategories']);
 Route::get('/products', [ApiController::class, 'getAllProducts']);
 Route::get('/specialties', [ApiController::class, 'getAllSpecialties']);
 Route::get('/products/subcategory/{id}', [ApiController::class, 'getProductsBySubcategory']);
+Route::get('/offers', [ApiController::class, 'getAllOffers']);

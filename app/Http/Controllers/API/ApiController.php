@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Api;
 
+use App\Models\Offer;
 use App\Models\Product;
 use App\Models\Category;
 use App\Models\Specialty;
@@ -89,25 +90,42 @@ class ApiController extends Controller
     }
 
     public function getProductsBySubcategory($id)
-{
-    try {
-        $products = Product::with(['category', 'subcategory'])
-            ->where('subcategory_id', $id)
-            ->get();
+    {
+        try {
+            $products = Product::with(['category', 'subcategory'])
+                ->where('subcategory_id', $id)
+                ->get();
 
-        return response()->json([
-            'status' => true,
-            'message' => 'Products fetched successfully.',
-            'data' => $products
-        ]);
-    } catch (\Exception $e) {
-        return response()->json([
-            'status' => false,
-            'message' => 'Failed to fetch products.',
-            'error' => $e->getMessage()
-        ], 500);
+            return response()->json([
+                'status' => true,
+                'message' => 'Products fetched successfully.',
+                'data' => $products
+            ]);
+        } catch (\Exception $e) {
+            return response()->json([
+                'status' => false,
+                'message' => 'Failed to fetch products.',
+                'error' => $e->getMessage()
+            ], 500);
+        }
     }
-}
 
+    public function getAllOffers(): JsonResponse
+    {
+        try {
+            $Offers = Offer::all();
 
+            return response()->json([
+                'status' => true,
+                'message' => 'Offers fetched successfully.',
+                'data' => $Offers
+            ], 200);
+        } catch (\Exception $e) {
+            return response()->json([
+                'status' => false,
+                'message' => 'Failed to fetch Offers.',
+                'error' => $e->getMessage()
+            ], 500);
+        }
+    }
 }
