@@ -1,12 +1,13 @@
 <?php
 
-use App\Http\Controllers\Admin\CategoryController;
+use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Admin\CmsController;
+use App\Http\Controllers\Admin\UserController;
+use App\Http\Controllers\Admin\OfferController;
 use App\Http\Controllers\Admin\ProductController;
+use App\Http\Controllers\Admin\CategoryController;
 use App\Http\Controllers\Admin\SpecialtyController;
 use App\Http\Controllers\Admin\SubcategoryController;
-use App\Http\Controllers\Admin\UserController;
-use Illuminate\Support\Facades\Route;
 
 Route::redirect('/', '/login');
 
@@ -61,6 +62,12 @@ Route::prefix('/admin')->middleware('auth')->group(function () {
     Route::post('/add_specialty', [SpecialtyController::class, 'store']);
     Route::post('/update_specialty/{id}', [SpecialtyController::class, 'update']);
     Route::delete('/delete_specialty/{id}', [SpecialtyController::class, 'destroy']);
+
+    // {{ Offer }}
+    Route::get('/show_offers', [OfferController::class, 'show_offers']);
+    Route::post('/add_offer', [OfferController::class, 'add_offer']);
+    Route::post('/update_offer/{id}', [OfferController::class, 'update_offer']);
+    Route::get('/delete_offer/{id}', [OfferController::class, 'delete_offer']);
 
     // // {{ Social }}
     // Route::get('/show_social',[SocialController::class,'show_social']);
