@@ -29,6 +29,7 @@ class SpecialtyController extends Controller
         Specialty::create([
             'name' => $request->name,
             'description' => $request->description,
+            'time' => $request->time ?? '', // like 30 days
             'image' => $imagePath,
             'price' => $request->price,
             'is_active' => $request->is_active ?? true,
@@ -57,6 +58,7 @@ class SpecialtyController extends Controller
         $specialty->update([
             'name' => $request->name,
             'description' => $request->description,
+            'time' => $request->time ?? '', // like 30 days
             'image' => $specialty->image,
             'price' => $request->price,
             'is_active' => $request->is_active ?? true,
