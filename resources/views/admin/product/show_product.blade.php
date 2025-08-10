@@ -3,6 +3,11 @@
 
 <head>
     @include('admin.css')
+    <style>
+        .no-bottom-margin {
+    margin-bottom: 0 !important;
+}
+    </style>
 </head>
 
 <body class="g-sidenav-show bg-gray-100">
@@ -84,14 +89,44 @@
                                             </td>
 
                                             <!-- Voucher Code -->
-                                            <td>
+                                            {{-- <td>
                                                 @if(isset($product->subcategory->name) &&
                                                 strtolower($product->subcategory->name) === 'voucher')
                                                 <span class="badge bg-info">{{ $product->code ?? 'N/A' }}</span>
                                                 @else
                                                 -
                                                 @endif
+                                            </td> --}}
+
+                                            <td>
+                                                @php
+                                                    $isVoucher = isset($product->subcategory->name)
+                                                        && strtolower($product->subcategory->name) === 'voucher';
+
+                                                    // Works with both the new relation and your legacy single `code` column
+                                                    $codes = collect(optional($product->codes)->pluck('code'))->filter();
+                                                    if ($codes->isEmpty() && !empty($product->code)) {
+                                                        $codes = collect([$product->code]);
+                                                    }
+                                                @endphp
+
+                                                @if($isVoucher)
+                                                    @if($codes->count() > 1)
+                                                        <span class="badge bg-info"
+                                                              data-bs-toggle="tooltip"
+                                                              title="{{ $codes->implode(', ') }}">
+                                                            Multiple
+                                                        </span>
+                                                    @elseif($codes->count() === 1)
+                                                        <span class="badge bg-info">{{ $codes->first() }}</span>
+                                                    @else
+                                                        <span class="text-muted">N/A</span>
+                                                    @endif
+                                                @else
+                                                    -
+                                                @endif
                                             </td>
+
 
 
                                             <!-- Price -->
@@ -175,6 +210,19 @@
             });
         });
     </script>
+
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+      const tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
+      tooltipTriggerList.forEach(el => new bootstrap.Tooltip(el));
+    });
+    </script>
+
+
+
+
 </body>
+
+
 
 </html>

@@ -49,6 +49,12 @@
                                             </th>
 
                                             <th
+                                            class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
+
+                                            Duration
+                                        </th>
+
+                                            <th
                                                 class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
 
                                                 Specialty Description
@@ -83,6 +89,12 @@
                                             <td>
                                                 <p class="text-xs font-weight-bold mb-0">
                                                     {{ $data->name }}
+                                                </p>
+                                            </td>
+
+                                            <td>
+                                                <p class="text-xs font-weight-bold mb-0">
+                                                    {{ $data->time }}
                                                 </p>
                                             </td>
 

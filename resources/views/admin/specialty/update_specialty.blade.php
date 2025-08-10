@@ -1,5 +1,5 @@
-<a type="button" class="text-primary font-weight-bold text-xs"
-   data-bs-toggle="modal" data-bs-target="#exampleModal{{ $data->id }}">
+<a type="button" class="text-primary font-weight-bold text-xs" data-bs-toggle="modal"
+    data-bs-target="#exampleModal{{ $data->id }}">
     Edit <i class="bi bi-pencil"></i>
 </a>
 
@@ -12,8 +12,8 @@
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
 
-            <form action="{{ url('/admin/update_specialty/' . $data->id) }}"
-                  method="POST" enctype="multipart/form-data">
+            <form action="{{ url('/admin/update_specialty/' . $data->id) }}" method="POST"
+                enctype="multipart/form-data">
                 @csrf
                 @method('POST') {{-- If your route is POST-based, keep it. If it's PUT, change this to @method('PUT') --}}
 
@@ -22,8 +22,13 @@
                     <!-- Name -->
                     <div class="mb-3">
                         <label class="form-label">Name</label>
-                        <input type="text" name="name" class="form-control"
-                               value="{{ $data->name }}" required>
+                        <input type="text" name="name" class="form-control" value="{{ $data->name }}" required>
+                    </div>
+
+                    <!-- Duration -->
+                    <div class="mb-3">
+                        <label class="form-label">Duration</label>
+                        <input type="text" name="time" class="form-control" value="{{ $data->time }}" required>
                     </div>
 
                     <!-- Description -->
@@ -33,21 +38,21 @@
                     </div>
 
                     <!-- Current Image Preview -->
-                    @if($data->image)
+                    @if ($data->image)
                         <div class="mb-3">
                             <label class="form-label d-block">Current Image</label>
-                            <img src="{{ asset('storage/' . $data->image) }}"
-                                 alt="Category Image" width="80" class="mb-2 rounded">
+                            <img src="{{ asset('storage/' . $data->image) }}" alt="Category Image" width="80"
+                                class="mb-2 rounded">
                         </div>
                     @endif
 
                     <!-- Price -->
                     <div class="mb-3">
                         <label class="form-label">Price</label>
-                        <input type="number" name="price" class="form-control"
-                               step="0.01" min="0" value="{{ $data->price }}" required>
+                        <input type="number" name="price" class="form-control" step="0.01" min="0"
+                            value="{{ $data->price }}" required>
                     </div>
-                    
+
                     <!-- Status -->
                     <div class="mb-3">
                         <label class="form-label">Status</label>

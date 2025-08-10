@@ -51,7 +51,7 @@ Route::prefix('/admin')->middleware('auth')->group(function () {
     // {{ Product }}
     Route::get('/show_product', [ProductController::class, 'index']);
     Route::post('/add_product', [ProductController::class, 'store']);
-    Route::get('/update_product/{id}', [ProductController::class, 'update_product']);
+    Route::post('/update_product/{id}', [ProductController::class, 'update']);
     Route::get('/view_product/{id}', [ProductController::class, 'view_product']);
     Route::post('/update_product_confirm/{id}', [ProductController::class, 'update_product_confirm']);
     Route::get('/delete_product/{id}', [ProductController::class, 'delete_product']);

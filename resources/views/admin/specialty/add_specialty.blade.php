@@ -21,6 +21,12 @@
                         <input type="text" name="name" class="form-control" required>
                     </div>
 
+                     <!-- Specialty Duration -->
+                     <div class="mb-3">
+                        <label class="form-label">Duration</label>
+                        <input type="text" name="time" class="form-control" required>
+                    </div>
+
                     <!-- Specialty Description -->
                     <div class="mb-3">
                         <label class="form-label">Description</label>
