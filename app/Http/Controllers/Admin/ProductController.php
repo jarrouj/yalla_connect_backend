@@ -8,6 +8,7 @@ use App\Models\ProductCode;
 use App\Models\Subcategory;
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
+use Illuminate\Support\Facades\Log;
 use App\Http\Controllers\Controller;
 
 
@@ -84,63 +85,87 @@ class ProductController extends Controller
     }
 
     public function update(Request $request, $id)
-    {
-        $product = Product::findOrFail($id);
+{
+    $product = Product::with('subcategory')->findOrFail($id);
 
-        $request->validate([
-            'category_id'    => 'required|exists:categories,id',
-            'subcategory_id' => 'required|exists:subcategories,id',
-            'type'           => 'required|string',
-            'title'          => 'required|string|max:255',
-            'description'    => 'nullable|string',
-            'price'          => 'required|numeric|min:0',
-            'image'          => 'nullable|image|mimes:jpg,jpeg,png|max:2048',
-            'codes'          => ['nullable','array', Rule::requiredIf(fn() => $this->isVoucherSub($request->subcategory_id))],
-            'codes.*'        => 'required|string|max:255|distinct',
-        ]);
+    // Get the new subcategory name from DB
+    $newSubcategory = Subcategory::findOrFail($request->subcategory_id);
+    $isVoucherNew   = strtolower($newSubcategory->name) === 'voucher';
 
-        if ($request->hasFile('image')) {
-            if ($product->image && file_exists(public_path('images/products/'.$product->image))) {
-                @unlink(public_path('images/products/'.$product->image));
-            }
-            $imageName = time().'.'.$request->file('image')->getClientOriginalExtension();
-            $request->file('image')->move(public_path('images/products'), $imageName);
-            $product->image = $imageName;
-        }
+    // Base validation rules
+    $rules = [
+        'category_id'    => 'required|exists:categories,id',
+        'subcategory_id' => 'required|exists:subcategories,id',
+        'title'          => 'required|string|max:255',
+        'description'    => 'nullable|string',
+        'price'          => 'required|numeric|min:0',
+        'image'          => 'nullable|image|mimes:jpg,jpeg,png|max:2048',
+    ];
 
-        $product->update([
-            'category_id'    => $request->category_id,
-            'subcategory_id' => $request->subcategory_id,
-            'type'           => $request->type,
-            'title'          => $request->title,
-            'description'    => $request->description,
-            'price'          => $request->price,
-            'image'          => $product->image ?? null,
-        ]);
-
-        // Sync codes if voucher; otherwise delete any existing codes
-        if ($this->isVoucherSub($request->subcategory_id)) {
-            $newCodes = collect($request->input('codes', []))
-                ->filter(fn($c) => filled($c))
-                ->unique()
-                ->values();
-
-            // Delete codes that are not in the new list
-            $product->codes()->whereNotIn('code', $newCodes)->delete();
-
-            // Upsert new/changed codes
-            // (unique key is product_id+code; this inserts missing ones)
-            $toInsert = $newCodes->diff($product->codes()->pluck('code'));
-            if ($toInsert->isNotEmpty()) {
-                $product->codes()->createMany($toInsert->map(fn($c) => ['code' => $c])->all());
-            }
-        } else {
-            // not voucher anymore → remove any previously saved codes
-            $product->codes()->delete();
-        }
-
-        return redirect()->back()->with('success', 'Product updated successfully.');
+    // Add voucher-specific validation
+    if ($isVoucherNew) {
+        $rules['codes']   = ['required', 'array', 'min:1'];
+        $rules['codes.*'] = ['required', 'string', 'max:255', 'distinct'];
     }
+
+    $request->validate($rules);
+
+    // Handle image upload
+    if ($request->hasFile('image')) {
+        if ($product->image && file_exists(public_path('images/products/'.$product->image))) {
+            @unlink(public_path('images/products/'.$product->image));
+        }
+        $imageName = time().'.'.$request->file('image')->getClientOriginalExtension();
+        $request->file('image')->move(public_path('images/products'), $imageName);
+        $product->image = $imageName;
+    }
+
+    // Track if it WAS voucher before
+    $wasVoucherOld = $product->subcategory && strtolower($product->subcategory->name) === 'voucher';
+
+    // Update product
+    $product->update([
+        'category_id'    => $request->category_id,
+        'subcategory_id' => $request->subcategory_id,
+        'title'          => $request->title,
+        'description'    => $request->description,
+        'price'          => $request->price,
+        'image'          => $product->image ?? null,
+        'type'           => $newSubcategory->name,
+    ]);
+
+    // Manage codes
+    if ($isVoucherNew) {
+        $newCodes = collect($request->input('codes', []))
+            ->filter(fn($c) => filled($c))
+            ->unique()
+            ->values();
+
+        $product->codes()->whereNotIn('code', $newCodes)->delete();
+
+        $existing = $product->codes()->pluck('code');
+        $toInsert = $newCodes->diff($existing);
+
+        if ($toInsert->isNotEmpty()) {
+            $product->codes()->createMany($toInsert->map(fn($c) => ['code' => $c])->all());
+        }
+
+        // Clear legacy single code
+        if (isset($product->code)) {
+            $product->code = null;
+            $product->save();
+        }
+    } else {
+        // Remove all codes if no longer voucher
+        $product->codes()->delete();
+        if (isset($product->code)) {
+            $product->code = null;
+            $product->save();
+        }
+    }
+
+    return back()->with('success', 'Product updated successfully.');
+}
 
     // Delete product
     public function destroy($id)
