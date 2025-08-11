@@ -24,7 +24,7 @@ Route::middleware([
 
 
 
-Route::prefix('/admin')->middleware('auth')->group(function () {
+Route::prefix('/admin')->middleware(['auth' , 'checkUserType'])->group(function () {
 
     Route::get('/', [CmsController::class, 'dash']);
 
