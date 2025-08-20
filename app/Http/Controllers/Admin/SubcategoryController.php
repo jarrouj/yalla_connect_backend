@@ -61,7 +61,7 @@ class SubcategoryController extends Controller
             'image' => $imagePath,
         ]);
 
-        return redirect()->back()->with('success', 'Subcategory updated successfully.');
+        return redirect()->back()->with('message', 'Subcategory updated successfully.');
     }
 
 
@@ -70,6 +70,6 @@ class SubcategoryController extends Controller
         $subcategory = Subcategory::findOrFail($id);
         $subcategory->delete();
 
-        return redirect()->back()->with('success', 'Subcategory deleted successfully.');
+        return redirect()->back()->with('message', 'Subcategory deleted successfully.');
     }
 }
