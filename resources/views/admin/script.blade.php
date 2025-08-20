@@ -157,3 +157,15 @@
 </script>
 
 
+<script>
+function deleteSubcategory(id) {
+    if (confirm('Are you sure you want to delete this subcategory?')) {
+        var deleteProducts = confirm('Do you also want to delete all products in this subcategory?');
+        if (deleteProducts) {
+            window.location.href = "{{ url('/admin/delete_subcategory_with_products') }}/" + id;
+        } else {
+            window.location.href = "{{ url('/admin/delete_subcategory') }}/" + id;
+        }
+    }
+}
+</script>

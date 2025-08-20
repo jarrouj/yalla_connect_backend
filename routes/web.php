@@ -24,7 +24,7 @@ Route::middleware([
 
 
 
-Route::prefix('/admin')->middleware(['auth' , 'checkUserType'])->group(function () {
+Route::prefix('/admin')->middleware(['auth', 'checkUserType'])->group(function () {
 
     Route::get('/', [CmsController::class, 'dash']);
 
@@ -47,6 +47,7 @@ Route::prefix('/admin')->middleware(['auth' , 'checkUserType'])->group(function 
     Route::post('/add_subcategory', [SubcategoryController::class, 'store']);
     Route::post('/update_subcategory/{id}', [SubcategoryController::class, 'update']);
     Route::delete('/delete_subcategory/{id}', [SubcategoryController::class, 'destroy']);
+    Route::get('/delete_subcategory_with_products/{id}', [SubcategoryController::class, 'destroyWithProducts']);
 
     // {{ Product }}
     Route::get('/show_product', [ProductController::class, 'index']);

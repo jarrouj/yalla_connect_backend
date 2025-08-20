@@ -62,17 +62,12 @@
                                             <td class="align-middle">
                                                 @include('admin.types.update_types', ['subcategory' => $sub])
                                             </td>
-                                            <td class="align-middle">
-                                                <form action="{{ url('/admin/delete_subcategory/' . $sub->id) }}"
-                                                    method="POST" onsubmit="return confirm('Are you sure?');">
-                                                    @csrf
-                                                    @method('DELETE')
-                                                    <button type="submit"
-                                                        class="btn btn-link text-danger font-weight-bold text-xs">
-                                                        Delete <i class="bi bi-trash"></i>
-                                                    </button>
-                                                </form>
-                                            </td>
+                                         <td class="align-middle">
+    <a href="#" onclick="deleteSubcategory({{ $sub->id }})"
+       class="btn btn-link text-danger font-weight-bold text-xs">
+       Delete <i class="bi bi-trash"></i>
+    </a>
+</td>
                                         </tr>
                                         @empty
                                         <tr>
