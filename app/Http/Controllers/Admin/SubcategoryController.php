@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\Category;
+use App\Models\Product;
 use App\Models\Subcategory;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -82,28 +83,48 @@ class SubcategoryController extends Controller
         return redirect()->back()->with('message', 'Subcategory deleted successfully.');
     }
 
-    public function destroyWithProducts($id)
+   public function destroyWithProducts($id)
     {
         DB::beginTransaction();
 
         try {
-            $subcategory = Subcategory::with('products')->findOrFail($id);
+            $subcategory = Subcategory::findOrFail($id);
 
-            // delete products under this subcategory
-            foreach ($subcategory->products as $product) {
-                // if product has extra images stored on 'public' disk
-                if ($product->image) {
-                    Storage::disk('public')->delete($product->image);
-                }
-                $product->delete();
-            }
+            // Delete products in chunks for safety if many
+            Product::where('subcategory_id', $subcategory->id)
+                ->chunkById(100, function ($products) {
+                    foreach ($products as $product) {
 
-            // delete subcategory image
-            if ($subcategory->image) {
+                        // MAIN product image (stored on 'public' disk as a path like 'product_images/xx.jpg')
+                        if (!empty($product->image)) {
+                            Storage::disk('public')->delete($product->image);
+
+                            // If you store filenames in /public/images/products:
+                            // $full = public_path('images/products/' . $product->image);
+                            // if (file_exists($full)) @unlink($full);
+                        }
+
+                        // EXTRA product images (if you have a product_images table)
+                        if (method_exists($product, 'images')) {
+                            $product->loadMissing('images');
+                            foreach ($product->images as $pimg) {
+                                if (!empty($pimg->image)) {
+                                    Storage::disk('public')->delete($pimg->image);
+                                }
+                                $pimg->delete();
+                            }
+                        }
+
+                        $product->delete(); // or ->forceDelete() if using SoftDeletes and you want hard delete
+                    }
+                });
+
+            // Delete subcategory image (stored on 'public' disk as 'subcategory_images/...')
+            if (!empty($subcategory->image)) {
                 Storage::disk('public')->delete($subcategory->image);
             }
 
-            $subcategory->delete();
+            $subcategory->delete(); // or ->forceDelete() if using SoftDeletes
 
             DB::commit();
 

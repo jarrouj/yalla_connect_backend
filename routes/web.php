@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Admin\AddBalanceController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Admin\CmsController;
 use App\Http\Controllers\Admin\UserController;
@@ -69,6 +70,11 @@ Route::prefix('/admin')->middleware(['auth', 'checkUserType'])->group(function (
     Route::post('/add_offer', [OfferController::class, 'add_offer']);
     Route::post('/update_offer/{id}', [OfferController::class, 'update_offer']);
     Route::get('/delete_offer/{id}', [OfferController::class, 'delete_offer']);
+
+    // {{ Show User Balance }}
+        Route::get('/show_user_balance', [AddBalanceController::class, 'show_user']);
+        Route::post('/users/{id}/balance/add', [AddBalanceController::class, 'add_balance'])->name('admin.users.balance.add');
+
 
     // // {{ Social }}
     // Route::get('/show_social',[SocialController::class,'show_social']);

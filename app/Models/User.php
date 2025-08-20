@@ -37,6 +37,7 @@ class User extends Authenticatable
     ];
     protected $casts = [
         'phone' => 'string',
+        'balance' => 'float'
     ];
 
 
@@ -73,6 +74,7 @@ class User extends Authenticatable
             'password' => 'hashed',
         ];
     }
+
 
 
     public function checkouts()
