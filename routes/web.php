@@ -9,6 +9,7 @@ use App\Http\Controllers\Admin\ProductController;
 use App\Http\Controllers\Admin\CategoryController;
 use App\Http\Controllers\Admin\SpecialtyController;
 use App\Http\Controllers\Admin\SubcategoryController;
+use App\Http\Controllers\PromoCodeController;
 
 Route::redirect('/', '/login');
 
@@ -74,6 +75,8 @@ Route::prefix('/admin')->middleware(['auth', 'checkUserType'])->group(function (
     // {{ Show User Balance }}
         Route::get('/show_user_balance', [AddBalanceController::class, 'show_user']);
         Route::post('/users/{id}/balance/add', [AddBalanceController::class, 'add_balance'])->name('admin.users.balance.add');
+
+
 
 
     // // {{ Social }}

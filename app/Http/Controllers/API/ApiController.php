@@ -10,6 +10,7 @@ use App\Models\Subcategory;
 use Illuminate\Http\Request;
 use Illuminate\Http\JsonResponse;
 use App\Http\Controllers\Controller;
+use App\Services\PromoService;
 
 class ApiController extends Controller
 {
@@ -50,25 +51,43 @@ class ApiController extends Controller
             ], 500);
         }
     }
+public function getAllProducts(Request $request): JsonResponse
+{
+    try {
+        $promo = optional($request->user())->activePromoCode; // null if unauthenticated
 
-    public function getAllProducts(): JsonResponse
-    {
-        try {
-            $products = Product::with(['category', 'subcategory'])->get();
+        $products = Product::with(['category', 'subcategory'])->get()
+            ->map(function ($p) use ($promo) {
+                // ensure price is numeric
+                $price = (float) $p->price;
+                $discounted = PromoService::discountedPrice($price, $promo);
 
-            return response()->json([
-                'status' => true,
-                'message' => 'Products fetched successfully.',
-                'data' => $products
-            ], 200);
-        } catch (\Exception $e) {
-            return response()->json([
-                'status' => false,
-                'message' => 'Failed to fetch products.',
-                'error' => $e->getMessage()
-            ], 500);
-        }
+                return [
+                    'id'               => $p->id,
+                    'title'            => $p->title,
+                    'image'            => $p->image,
+                    'price'            => $price,            // original
+                    'discounted_price' => $discounted,       // per-user
+                    'discount_percent' => $promo?->percent ?? 0,
+                    'category'         => $p->category,
+                    'subcategory'      => $p->subcategory,
+                ];
+            });
+
+        return response()->json([
+            'status'  => true,
+            'message' => 'Products fetched successfully.',
+            'data'    => $products,
+            'promo'   => $promo ? ['code' => $promo->code, 'percent' => $promo->percent] : null,
+        ], 200);
+    } catch (\Exception $e) {
+        return response()->json([
+            'status'  => false,
+            'message' => 'Failed to fetch products.',
+            'error'   => $e->getMessage()
+        ], 500);
     }
+}
 
     public function getAllSpecialties(): JsonResponse
     {

@@ -86,4 +86,9 @@ class User extends Authenticatable
     {
         return $this->hasMany(History::class);
     }
+
+    public function activePromoCode()
+{
+    return $this->belongsTo(PromoCode::class, 'active_promo_code_id');
+}
 }
