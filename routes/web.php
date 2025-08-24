@@ -7,6 +7,7 @@ use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\Admin\OfferController;
 use App\Http\Controllers\Admin\ProductController;
 use App\Http\Controllers\Admin\CategoryController;
+use App\Http\Controllers\Admin\PromoCodesController;
 use App\Http\Controllers\Admin\SpecialtyController;
 use App\Http\Controllers\Admin\SubcategoryController;
 use App\Http\Controllers\PromoCodeController;
@@ -73,10 +74,15 @@ Route::prefix('/admin')->middleware(['auth', 'checkUserType'])->group(function (
     Route::get('/delete_offer/{id}', [OfferController::class, 'delete_offer']);
 
     // {{ Show User Balance }}
-        Route::get('/show_user_balance', [AddBalanceController::class, 'show_user']);
-        Route::post('/users/{id}/balance/add', [AddBalanceController::class, 'add_balance'])->name('admin.users.balance.add');
+    Route::get('/show_user_balance', [AddBalanceController::class, 'show_user']);
+    Route::post('/users/{id}/balance/add', [AddBalanceController::class, 'add_balance'])->name('admin.users.balance.add');
 
 
+    // {{ Promo }}
+    Route::get('/show_promo', [PromoCodesController::class, 'show_promo_codes']);
+    Route::post('/add_promo', [PromoCodesController::class, 'store']);
+    Route::put('/update_promo/{promo}', [PromoCodesController::class, 'update'])->name('admin.promos.update');
+    Route::delete('/admin/promos/{promo}', [PromoCodesController::class, 'destroy'])->name('admin.promos.destroy');
 
 
     // // {{ Social }}
@@ -90,11 +96,7 @@ Route::prefix('/admin')->middleware(['auth', 'checkUserType'])->group(function (
     // Route::get('/delete_subscriber/{id}',[SubscriberController::class,'delete_subscriber']);
     // Route::post('/send_email', [SubscriberController::class, 'message'])->name('send.email');
 
-    // // {{ Promo }}
-    // Route::get('/show_promo' , [PromoController::class , 'show_promo']);
-    // Route::post('/add_promo' , [PromoController::class , 'add_promo']);
-    // Route::post('/update_promo/{id}' , [PromoController::class , 'update_promo']);
-    // Route::get('/delete_promo' , [PromoController::class , 'delete_promo']);
+
 
     // // {{ Term }}
     // Route::get('/show_term' , [TermController::class , 'show_term']);
