@@ -19,8 +19,16 @@ class History extends Model
 
     protected $fillable = [
         'product_id',
-        'type',
+        'specialty_id',
         'user_id',
-        'code'
+        'type',
+        'code',
+        'amount',
+        'quantity',
     ];
+
+    public function specialty()
+    {
+        return $this->belongsTo(Specialty::class);
+    }
 }

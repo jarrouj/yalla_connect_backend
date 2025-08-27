@@ -5,9 +5,9 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\ApiController;
 
 use App\Http\Controllers\CheckoutController;
+use App\Http\Controllers\PromoCodeController;
 use App\Http\Controllers\API\BalanceController;
 use App\Http\Controllers\AuthApi\AuthApiController;
-use App\Http\Controllers\PromoCodeController;
 
 Route::get('/user', function (Request $request) {
     return $request->user();
@@ -25,6 +25,7 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::post('/save-fcm-token', [BalanceController::class, 'saveFcmToken']);
     Route::post('/add-balance', [BalanceController::class, 'addBalance']);
     Route::post('/checkout/{productId}', [CheckoutController::class, 'checkoutProduct']);
+    Route::post('/specialties/checkout/{specialtyId}', [CheckoutController::class, 'checkoutSpecialty']);
     Route::get('/history', [CheckoutController::class, 'userHistory']);
 });
 
@@ -41,8 +42,8 @@ Route::middleware('auth:sanctum')->get('/user-balance', function (Request $reque
 Route::get('/categories', [ApiController::class, 'getAllCategories']);
 Route::get('/subcategories', [ApiController::class, 'getAllSubcategories']);
 Route::middleware('auth:sanctum')->get('/products', [ApiController::class, 'getAllProducts']);
-Route::get('/specialties', [ApiController::class, 'getAllSpecialties']);
-Route::get('/products/subcategory/{id}', [ApiController::class, 'getProductsBySubcategory']);
+Route::middleware('auth:sanctum')->get('/specialties', [ApiController::class, 'getAllSpecialties']);
+Route::middleware('auth:sanctum')->get('/products/subcategory/{id}', [ApiController::class, 'getProductsBySubcategory']);
 Route::get('/offers', [ApiController::class, 'getAllOffers']);
 Route::middleware('auth:sanctum')->group(function () {
     Route::post('/promo/apply', [PromoCodeController::class, 'apply']);
