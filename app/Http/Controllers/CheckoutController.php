@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\History;
 use App\Models\Product;
 use App\Models\Checkout;
+use App\Models\Transaction;
 use App\Models\ProductCodes;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -78,6 +79,13 @@ class CheckoutController extends Controller
                     'code'       => $assignedCode, // null for non-voucher
                 ]);
 
+                Transaction::create([
+                    'user_id' => $user->id,
+                    'type_of_transaction' => 'Product Purchase ' . $product->title,
+                    'amount' => $product->price,
+                ]);
+
+
                 return [
                     'checkout'     => $checkout,
                     'history'      => $history,
@@ -95,7 +103,6 @@ class CheckoutController extends Controller
                 'voucher_code'  => $result['assignedCode'], // present only if voucher
                 'new_balance'   => $result['new_balance'],
             ]);
-
         } catch (\Symfony\Component\HttpKernel\Exception\HttpException $e) {
             // catches the 409 abort above
             return response()->json([
@@ -118,7 +125,12 @@ class CheckoutController extends Controller
             ->where('user_id', $user->id)
             ->latest()
             ->get([
-                'id','product_id','user_id','type','code','created_at'
+                'id',
+                'product_id',
+                'user_id',
+                'type',
+                'code',
+                'created_at'
             ]);
 
         return response()->json([

@@ -2,9 +2,10 @@
 
 namespace App\Http\Controllers\Admin;
 
-use App\Http\Controllers\Controller;
 use App\Models\User;
+use App\Models\Transaction;
 use Illuminate\Http\Request;
+use App\Http\Controllers\Controller;
 
 class AddBalanceController extends Controller
 {
@@ -31,6 +32,13 @@ class AddBalanceController extends Controller
         // atomic increment (handles concurrency)
         $user->increment('balance', $amount);
         $user->refresh();
+
+        Transaction::create([
+            'user_id' => $user->id,
+            'type_of_transaction' => 'deposit',
+            'amount' => $amount,
+        ]);
+
 
         return redirect()->back()
             ->with('message', "Balance updated: {$before} → {$user->balance} (+" . number_format($amount, 2) . ").");

@@ -35,7 +35,7 @@ class PromoCodesController extends Controller
             'percent'         => (int) $request->input('percent', $request->input('discount')),
             'is_active'       => (int) $request->input('is_active', $request->input('active', 0)) ? 1 : 0,
             // 👇 this is the key line
-            'global_one_time' => $request->has('global_one_time') ? 1 : 0,
+            'global_one_time' => (int) $request->input('global_one_time', 0),
             'starts_at'       => $request->input('starts_at'),
             'ends_at'         => $request->input('ends_at'),
         ];
