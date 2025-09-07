@@ -6,6 +6,7 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Models\Offer;
+use App\Models\PromoCode;
 use App\Models\Transaction;
 use Carbon\Carbon;
 
@@ -14,9 +15,9 @@ class DashboardController extends Controller
     public function getAllUsers()
     { //returns the users number
 
-        $users = User::count();
+        $usersCount = User::count();
 
-        return view('admin.home')->with('users', $users);
+        return view('admin.home' , compact('usersCount'));
     }
 
     public function getNumberOfTransactionsTdy()
@@ -25,9 +26,9 @@ class DashboardController extends Controller
         $today = Carbon::today();
 
         // Count transactions created today
-        $count = Transaction::whereDate('created_at', $today)->count();
+        $TransactionCount = Transaction::whereDate('created_at', $today)->count();
 
-        return view('admin.home')->with('transactions_today', $count);
+        return view('admin.home' , compact('TransactionCount'));
     }
 
     public function getRevenueToday() //return the revenue that was made today
@@ -37,7 +38,7 @@ class DashboardController extends Controller
         // Sum all transaction amounts created today
         $revenue = Transaction::whereDate('created_at', $today)->sum('amount');
 
-        return view('admin.home')->with('revenue_today', $revenue);
+        return view('admin.home' , compact('revenue'));
     }
 
     public function getRevenueThisMonth()
@@ -52,6 +53,17 @@ class DashboardController extends Controller
 
     public function getActivePromoCodes()
     { //return the active promo codes
+
+         $now = Carbon::now();
+
+    return PromoCode::where('is_active', true)
+        ->where(function ($query) use ($now) {
+            $query->whereNull('starts_at')->orWhere('starts_at', '<=', $now);
+        })
+        ->where(function ($query) use ($now) {
+            $query->whereNull('ends_at')->orWhere('ends_at', '>=', $now);
+        })
+        ->get();
     }
 
         public function getNumberOfOffers() {

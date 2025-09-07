@@ -15,33 +15,7 @@
         <div class="container-fluid py-4">
 
             <div class="row">
-                <div class="col-xl-3 col-sm-6 mb-xl-0 mb-4">
-                    <div class="card h-100">
-                        <div class="card-body p-3">
-                            <div class="row">
-                                <div class="col-8">
-                                    <div class="numbers">
-                                        <p class="text-sm mb-0 text-uppercase font-weight-bold">Track the Number of
-                                            Session</p>
-                                        <h5 class="font-weight-bolder">
-                                            <a target="_blank" href="https://analytics.google.com/analytics/web"
-                                                class="fw-light text-center text-primary">
-                                                www.analytics.google.com
-                                            </a>
-                                        </h5>
-                                    </div>
-                                </div>
-                                <div class="col-4 text-end">
-                                    <div
-                                        class="icon icon-shape bg-gradient-danger shadow-danger text-center rounded-circle">
-                                        <i class="bi bi-bar-chart text-lg opacity-10" style="font-size: 20px"
-                                            aria-hidden="true"></i>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+
                 <div class="col-xl-3 col-sm-6 mb-xl-0 mb-4">
                     <div class="card h-100">
                         <div class="card-body p-3">
@@ -50,7 +24,7 @@
                                     <div class="numbers">
                                         <p class="text-sm mb-0 text-uppercase font-weight-bold">Number of Users</p>
                                         <h5 class="font-weight-bolder">
-                                            {{-- {{ $NumberOfUsers }} --}}
+                                            {{ $NumberOfUsers }}
                                         </h5>
                                     </div>
                                 </div>
@@ -72,16 +46,16 @@
                             <div class="row">
                                 <div class="col-8">
                                     <div class="numbers">
-                                        <p class="text-sm mb-0 text-uppercase font-weight-bold">Number of Orders Confirmed</p>
+                                        <p class="text-sm mb-0 text-uppercase font-weight-bold">Number of Transactions Today</p>
                                         <h5 class="font-weight-bolder">
-                                            {{-- {{ $NumberOfOrdersConfirmed }} --}}
+                                            {{ $TransactionCount }}
                                         </h5>
                                     </div>
                                 </div>
                                 <div class="col-4 text-end">
                                      <div
                                         class="icon icon-shape bg-gradient-primary shadow-primary text-center rounded-circle">
-                                        <i class="bi bi-box-seam-fill text-lg opacity-10" aria-hidden="true"></i>
+                                        <i class="bi bi-credit-card text-lg opacity-10" aria-hidden="true"></i>
                                     </div>
                                 </div>
                             </div>
@@ -94,17 +68,41 @@
                             <div class="row">
                                 <div class="col-8">
                                     <div class="numbers">
-                                        <p class="text-sm mb-0 text-uppercase font-weight-bold">New Orders
+                                        <p class="text-sm mb-0 text-uppercase font-weight-bold">Revenue Made Today
                                         </p>
                                         <h5 class="font-weight-bolder">
-                                            {{-- {{ $NumberOfOrdersNonConfirmed }} --}}
+                                            {{ $revenue_tdy }}$
                                         </h5>
                                     </div>
                                 </div>
                                 <div class="col-4 text-end">
                                     <div
                                         class="icon icon-shape bg-gradient-warning shadow-warning text-center rounded-circle">
-                                        <i class="bi bi-box-seam-fill text-lg opacity-10" aria-hidden="true"></i>
+                                        <i class="bi bi-cash text-lg opacity-10" aria-hidden="true"></i>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-xl-3 col-sm-6">
+                    <div class="card h-100">
+                        <div class="card-body p-3">
+                            <div class="row">
+                                <div class="col-8">
+                                    <div class="numbers">
+                                        <p class="text-sm mb-0 text-uppercase font-weight-bold">None Finished Orders
+                                        </p>
+                                        <h5 class="font-weight-bolder">
+                                            {{ $non_finished_orders }}
+                                        </h5>
+                                    </div>
+                                </div>
+                                <div class="col-4 text-end">
+                                    <div
+                                        class="icon icon-shape bg-gradient-warning shadow-warning text-center rounded-circle">
+                                        <i class="bi bi-box-fill text-lg opacity-10" aria-hidden="true"></i>
                                     </div>
                                 </div>
                             </div>
@@ -120,9 +118,9 @@
                             <div class="row">
                                 <div class="col-8">
                                     <div class="numbers">
-                                        <p class="text-sm mb-0 text-uppercase font-weight-bold">Revenue</p>
+                                        <p class="text-sm mb-0 text-uppercase font-weight-bold">Revenue Made This Month</p>
                                         <h5 class="font-weight-bolder">
-                                            {{-- {{ $Revenue }}$ --}}
+                                            {{ $revenue_this_month }}$
                                         </h5>
                                     </div>
                                 </div>
@@ -142,9 +140,9 @@
                             <div class="row">
                                 <div class="col-8">
                                     <div class="numbers">
-                                        <p class="text-sm mb-0 text-uppercase font-weight-bold">Number of Active Offers</p>
+                                        <p class="text-sm mb-0 text-uppercase font-weight-bold">Active Promo Codes</p>
                                         <h5 class="font-weight-bolder">
-                                            {{-- {{ $NumberOfActiveOffers }} --}}
+                                            {{ $active_promo_codes }}
                                         </h5>
                                     </div>
                                 </div>
@@ -165,9 +163,9 @@
                             <div class="row">
                                 <div class="col-8">
                                     <div class="numbers">
-                                        <p class="text-sm mb-0 text-uppercase font-weight-bold">Number of Products</p>
+                                        <p class="text-sm mb-0 text-uppercase font-weight-bold">Active Specialties</p>
                                         <h5 class="font-weight-bolder">
-                                            {{-- {{ $NumberOfProducts }} --}}
+                                            {{ $active_specialties }}
                                         </h5>
                                     </div>
                                 </div>
@@ -187,17 +185,17 @@
                             <div class="row">
                                 <div class="col-8">
                                     <div class="numbers">
-                                        <p class="text-sm mb-0 text-uppercase font-weight-bold">Total Subscribers
+                                        <p class="text-sm mb-0 text-uppercase font-weight-bold">Completed Orders Today
                                         </p>
                                         <h5 class="font-weight-bolder">
-                                            {{-- {{ $NumberOfSubscribers }} --}}
+                                            {{ $completed_orders_tdy }}
                                         </h5>
                                     </div>
                                 </div>
                                 <div class="col-4 text-end">
                                     <div
                                         class="icon icon-shape bg-gradient-warning shadow-warning text-center rounded-circle">
-                                        <i class="bi bi-newspaper"></i>
+                                        <i class="bi bi-box-fill"></i>
                                     </div>
                                 </div>
                             </div>

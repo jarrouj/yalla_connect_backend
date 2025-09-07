@@ -2,9 +2,15 @@
 
 namespace App\Http\Controllers\Admin;
 
-use App\Http\Controllers\Controller;
+use Carbon\Carbon;
 use App\Models\User;
+use App\Models\Transaction;
 use Illuminate\Http\Request;
+use App\Http\Controllers\Controller;
+use App\Models\Checkout;
+use App\Models\Product;
+use App\Models\PromoCode;
+use App\Models\Specialty;
 
 class CmsController extends Controller
 {
@@ -13,7 +19,20 @@ class CmsController extends Controller
 
 
         $user = User::latest()->paginate(5); // all users
-        $NumberOfUsers = User::where('usertype', 0)->count(); // Customers non-admin users
+        $NumberOfUsers = User::where('usertype', 0)->count(); //return customers non-admin users
+        $today = Carbon::today();// today date
+        $TransactionCount = Transaction::whereDate('created_at', $today)->count();// Count transactions created today
+        $revenue_tdy = Transaction::whereDate('created_at', $today)->sum('amount'); // Sum all transaction amounts created today
+        $month = Carbon::now()->month; // this months number
+        $revenue_this_month = Transaction::whereMonth('created_at', $month)->sum('amount');// Sum all transaction amounts created this month
+        $now = Carbon::now();
+        $active_promo_codes = PromoCode::where('is_active', true)->count(); //return the active promo codes
+        $number_of_prodcuts = Product::all()->count(); // Total number of products
+        $completed_orders_tdy = Checkout::whereDate('created_at', $today)
+                                ->where('is_completed', true)
+                                ->count(); // number of completed orders today
+        $active_specialties = Specialty::where('is_active', true)->count(); // Total number of Active Specialties
+        $non_finished_orders = Checkout::where('is_completed', false)->count(); // number of non completed orders
 
         // $NumberOfOrdersConfirmed = Order::where('confirm', 1) // number of confirmed orders
         // ->whereBetween('created_at', [$startDate, $endDate])
@@ -114,7 +133,7 @@ class CmsController extends Controller
         //     'end_date',
         // ));
 
-           return view('admin.home' );
+           return view('admin.home' , compact('NumberOfUsers', 'TransactionCount' , 'revenue_this_month' , 'revenue_tdy' , 'active_promo_codes' , 'number_of_prodcuts' , 'completed_orders_tdy' , 'active_specialties' , 'non_finished_orders') );
     }
 
 }

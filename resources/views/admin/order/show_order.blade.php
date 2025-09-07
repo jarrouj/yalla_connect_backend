@@ -48,10 +48,7 @@
                                                     placeholder="example@gmail.com" style="height: 41px "
                                                     id="searchInput">
 
-
-
                                             </div>
-
                                         </div>
 
                                     </form>

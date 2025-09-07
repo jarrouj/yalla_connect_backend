@@ -19,6 +19,6 @@ class Checkout extends Model
     protected $fillable = [
         'product_id','specialty_id','user_id',
         'title','price','final_price','quantity','total_paid',
-        'promo_code','promo_percent'
+        'promo_code','promo_percent','is_completed'
       ];
 }
