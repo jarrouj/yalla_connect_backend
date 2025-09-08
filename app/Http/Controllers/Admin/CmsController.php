@@ -11,6 +11,7 @@ use App\Models\Checkout;
 use App\Models\Product;
 use App\Models\PromoCode;
 use App\Models\Specialty;
+use Illuminate\Support\Facades\DB;
 
 class CmsController extends Controller
 {
@@ -22,29 +23,40 @@ class CmsController extends Controller
         $NumberOfUsers = User::where('usertype', 0)->count(); //return customers non-admin users
         $today = Carbon::today();// today date
         $TransactionCount = Transaction::whereDate('created_at', $today)->count();// Count transactions created today
-        $revenue_tdy = Transaction::whereDate('created_at', $today)->sum('amount'); // Sum all transaction amounts created today
+        $revenue_tdy = Checkout::whereDate('created_at', $today)->sum('total_paid'); // Sum all transaction amounts created today
         $month = Carbon::now()->month; // this months number
-        $revenue_this_month = Transaction::whereMonth('created_at', $month)->sum('amount');// Sum all transaction amounts created this month
+        $revenue_this_month = Checkout::whereMonth('created_at', $month)->sum('total_paid');// Sum all transaction amounts created this month
         $now = Carbon::now();
         $active_promo_codes = PromoCode::where('is_active', true)->count(); //return the active promo codes
         $number_of_prodcuts = Product::all()->count(); // Total number of products
-        $completed_orders_tdy = Checkout::whereDate('created_at', $today)
+        $completed_orders_tdy = Checkout::whereDate('updated_at', $today)
                                 ->where('is_completed', true)
                                 ->count(); // number of completed orders today
         $active_specialties = Specialty::where('is_active', true)->count(); // Total number of Active Specialties
         $non_finished_orders = Checkout::where('is_completed', false)->count(); // number of non completed orders
 
-        // $NumberOfOrdersConfirmed = Order::where('confirm', 1) // number of confirmed orders
-        // ->whereBetween('created_at', [$startDate, $endDate])
-        // ->count();
 
-        // $NumberOfOrdersNonConfirmed = Order::whereNull('confirm')// number of order nor confirmed nor canceled
-        // ->whereBetween('created_at', [$startDate, $endDate])
-        // ->count();
+  // -------- Revenue series for chart --------
 
-        // $NumberOfActiveOffers = Offer::where('active', 1)->count(); // Total Number of Active Offers
-        // $NumberOfProducts = Product::all()->count(); // Total number of products
-        // $NumberOfSubscribers = Subscriber::all()->count(); // Total subscribers
+    $endTz = Carbon::now()->endOfDay();
+    $startTz = Carbon::now()->subDays(90)->startOfDay();
+    $startUtc = $startTz->clone()->timezone('UTC');
+    $endUtc   = $endTz->clone()->timezone('UTC');
+
+    // Daily revenue (last 90 days)
+    $revenueDaily = Checkout::whereBetween('created_at', [$startUtc, $endUtc])
+        ->select(DB::raw('DATE(created_at) as d'), DB::raw('SUM(total_paid) as sum'))
+        ->groupBy('d')
+        ->orderBy('d')
+        ->pluck('sum', 'd'); // returns ["2025-06-10" => 123.45, ...]
+
+    // Monthly revenue (YTD, up to today)
+    $startYearUtc = Carbon::now()->startOfYear()->timezone('UTC');
+    $revenueMonthly = Checkout::whereBetween('created_at', [$startYearUtc, $endUtc])
+        ->select(DB::raw("DATE_FORMAT(created_at, '%Y-%m') as ym"), DB::raw('SUM(total_paid) as sum'))
+        ->groupBy('ym')
+        ->orderBy('ym')
+        ->pluck('sum', 'ym'); // returns ["2025-01" => 1234.56, ...]
 
 
 
@@ -133,7 +145,12 @@ class CmsController extends Controller
         //     'end_date',
         // ));
 
-           return view('admin.home' , compact('NumberOfUsers', 'TransactionCount' , 'revenue_this_month' , 'revenue_tdy' , 'active_promo_codes' , 'number_of_prodcuts' , 'completed_orders_tdy' , 'active_specialties' , 'non_finished_orders') );
+           return view('admin.home' , compact('NumberOfUsers', 'TransactionCount' , 'revenue_this_month' , 'revenue_tdy' , 'active_promo_codes' , 'number_of_prodcuts' , 'completed_orders_tdy' , 'active_specialties' , 'non_finished_orders') )->with([
+        'revenueDaily' => $revenueDaily,
+        'revenueMonthly' => $revenueMonthly,
+        'chartStart' => $startTz->toDateString(),
+        'chartEnd'   => $endTz->toDateString(),
+    ]);
     }
 
 }

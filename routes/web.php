@@ -7,6 +7,7 @@ use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\Admin\OfferController;
 use App\Http\Controllers\Admin\ProductController;
 use App\Http\Controllers\Admin\CategoryController;
+use App\Http\Controllers\Admin\OrderController;
 use App\Http\Controllers\Admin\PromoCodesController;
 use App\Http\Controllers\Admin\SpecialtyController;
 use App\Http\Controllers\Admin\SubcategoryController;
@@ -83,6 +84,11 @@ Route::prefix('/admin')->middleware(['auth', 'checkUserType'])->group(function (
     Route::post('/add_promo', [PromoCodesController::class, 'store']);
     Route::put('/update_promo/{promo}', [PromoCodesController::class, 'update'])->name('admin.promos.update');
     Route::delete('/admin/promos/{promo}', [PromoCodesController::class, 'destroy'])->name('admin.promos.destroy');
+
+    // {{ Orders }}
+    Route::post('/update-status/{id}', [OrderController::class, 'updateStatus'])->name('update-status');
+    Route::get('/show_order', [OrderController::class, 'show_orders'])->name('admin.orders');
+    Route::get('/delete_order/{id}', [OrderController::class, 'delete_order']);
 
 
     // // {{ Social }}

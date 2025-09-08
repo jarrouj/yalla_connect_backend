@@ -30,31 +30,45 @@
                             </div>
                         </div> --}}
 
-                        {{-- Search --}}
-                        <div class="row">
+                        {{-- Filters --}}
+                        <div class="row mb-3">
                             <div class="col-12">
-                                <div class="d-block w-50 m-auto">
-                                    <form action="{{ url('/admin/search_user') }}" method="GET">
-                                        @csrf
-                                        <p for="" class="text-center form-label">Search Names, Emails or Phone
-                                            Number
-                                        </p>
-
-                                        <div class="d-flex justify-content-center">
-
-                                            <div class="input-group mb-3 w-75">
-
-                                                <input type="text" name="text" class="form-control"
-                                                    placeholder="example@gmail.com" style="height: 41px "
-                                                    id="searchInput">
-
-                                            </div>
+                                <div class="d-block w-75 m-auto">
+                                    <form action="{{ route('admin.orders') }}" method="GET"
+                                        class="row g-2 align-items-end">
+                                        <div class="col-md-6">
+                                            <label class="form-label d-block text-center mb-1">Status</label>
+                                            <select name="status" class="form-select" onchange="this.form.submit()">
+                                                <option value="all" {{ ($selectedStatus ??
+                                                    request('status','all'))==='all' ? 'selected' : '' }}>All</option>
+                                                <option value="completed" {{ ($selectedStatus ??
+                                                    request('status'))==='completed' ? 'selected' : '' }}>Completed
+                                                </option>
+                                                <option value="pending" {{ ($selectedStatus ??
+                                                    request('status'))==='pending' ? 'selected' : '' }}>Pending</option>
+                                            </select>
                                         </div>
-
+                                        <div class="col-md-6">
+                                            <label class="form-label d-block text-center mb-1">Date</label>
+                                            <select name="period" class="form-select" onchange="this.form.submit()">
+                                                <option value="all" {{ ($selectedPeriod ??
+                                                    request('period','all'))==='all' ? 'selected' : '' }}>All time
+                                                </option>
+                                                <option value="today" {{ ($selectedPeriod ??
+                                                    request('period'))==='today' ? 'selected' : '' }}>Today</option>
+                                                <option value="week" {{ ($selectedPeriod ?? request('period'))==='week'
+                                                    ? 'selected' : '' }}>This week</option>
+                                                <option value="month" {{ ($selectedPeriod ??
+                                                    request('period'))==='month' ? 'selected' : '' }}>This month
+                                                </option>
+                                            </select>
+                                        </div>
                                     </form>
                                 </div>
                             </div>
                         </div>
+
+
 
                         <div class="card-body px-0 pt-0 pb-2">
                             <div class="table-responsive p-0">
@@ -79,12 +93,12 @@
                                                 User
                                             </th>
 
-
+                                            {{--
                                             <th
                                                 class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
 
                                                 Address
-                                            </th>
+                                            </th> --}}
 
                                             <th
                                                 class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
@@ -98,21 +112,21 @@
                                                 Phone
                                             </th>
 
-
+                                            {{--
                                             <th
                                                 class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
 
                                                 Registered
-                                            </th>
+                                            </th> --}}
 
-
+                                            {{--
                                             <th
                                                 class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
 
                                                 Paid
-                                            </th>
+                                            </th> --}}
 
-                                            <th
+                                            {{-- <th
                                                 class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
 
                                                 Method
@@ -122,25 +136,25 @@
                                                 class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
 
                                                 Delivered
-                                            </th>
+                                            </th> --}}
 
-                                            <th
+                                            {{-- <th
                                                 class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
 
                                                 Promo
-                                            </th>
+                                            </th> --}}
 
-                                            <th
+                                            {{-- <th
                                                 class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
 
                                                 Total Points
-                                            </th>
+                                            </th> --}}
 
-                                            <th
+                                            {{-- <th
                                                 class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
 
                                                 Total (LBP)
-                                            </th>
+                                            </th> --}}
 
                                             <th
                                                 class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
@@ -154,208 +168,171 @@
                                         </tr>
                                     </thead>
                                     <tbody id="SearchResults">
-                                        @forelse ($order as $data)
-                                            <tr class="text-center">
-                                                <td>
-                                                    <div class="d-flex">
-                                                        @if ($data->confirm === 0)
-                                                            <form
-                                                                action="{{ route('update-status', ['id' => $data->id]) }}"
-                                                                method="POST">
-                                                                @csrf
-                                                                <button type="submit" name="conf" value="0"
-                                                                    class="btn btn-danger btn-sm" disabled>
-                                                                    <i class="bi bi-x" style="font-size: 1rem;"></i>
-                                                                </button>
-                                                            </form>
-                                                        @elseif ($data->confirm === 1)
-                                                            <form
-                                                                action="{{ route('update-status', ['id' => $data->id]) }}"
-                                                                method="POST">
-                                                                @csrf
-                                                                <button type="submit" name="conf" value="1"
-                                                                    class="btn btn-success btn-sm me-1" disabled>
-                                                                    <i class="bi bi-check" style="font-size: 1rem;"></i>
-                                                                </button>
-                                                            </form>
-                                                        @else
-                                                            <form
-                                                                action="{{ route('update-status', ['id' => $data->id]) }}"
-                                                                method="POST">
-                                                                @csrf
-                                                                <button type="submit" name="conf" value="1"
-                                                                    class="btn btn-success btn-sm me-1">
-                                                                    <i class="bi bi-check" style="font-size: 1rem;"></i>
-                                                                </button>
-                                                            </form>
-                                                            <form
-                                                                action="{{ route('update-status', ['id' => $data->id]) }}"
-                                                                method="POST">
-                                                                @csrf
-                                                                <button type="submit" name="conf" value="0"
-                                                                    class="btn btn-danger btn-sm">
-                                                                    <i class="bi bi-x" style="font-size: 1rem;"></i>
-                                                                </button>
-                                                            </form>
-                                                        @endif
-                                                    </div>
-                                                </td>
-
-
-                                                <td>
-                                                    <p class="text-xs font-weight-bold mb-0">
-                                                        #{{ $data->id }}
-                                                    </p>
-                                                </td>
-
-                                                <td>
-                                                    <p class="text-xs font-weight-bold mb-0">
-                                                        @if ($data->user_id)
-                                                            @foreach ($users as $user)
-                                                                @if ($user->id == $data->user_id)
-                                                                    {{ $user->f_name }} {{ $user->l_name }}
-                                                                @endif
-                                                            @endforeach
-                                                        @else
-                                                            <p class="text-xs font-weight-bold mb-0">
-                                                                {{ $data->f_name }} {{ $data->l_name }}
-                                                            </p>
-                                                        @endif
-                                                    </p>
-                                                </td>
-
-                                                <td>
-                                                    @if ($data->address !== null)
-                                                        <i class="fa fa-check text-success"></i>
+                                        @forelse ($orders as $data)
+                                        <tr class="text-center">
+                                            <td>
+                                                <div class="d-flex justify-content-center">
+                                                    @if ($data->is_completed === 1)
+                                                    {{-- Show disabled grey button when completed --}}
+                                                    <button class="btn btn-secondary btn-sm" disabled>
+                                                        <i class="bi bi-check" style="font-size: 1rem;"></i>
+                                                    </button>
                                                     @else
-                                                        <i class="fa fa-times text-danger"></i>
+                                                    {{-- No confirmation yet: show active green --}}
+                                                    <form action="{{ route('update-status', ['id' => $data->id]) }}"
+                                                        method="POST">
+                                                        @csrf
+                                                        <button type="submit" name="conf" value="1"
+                                                            class="btn btn-success btn-sm">
+                                                            <i class="bi bi-check" style="font-size: 1rem;"></i>
+                                                        </button>
+                                                    </form>
                                                     @endif
-                                                </td>
+                                                </div>
+                                            </td>
 
-                                                <td>
-                                                    <p class="text-xs font-weight-bold mb-0">
-                                                        {{ $data->email }}
-                                                    </p>
-                                                </td>
 
-                                                <td>
-                                                    <p class="text-xs font-weight-bold mb-0">
-                                                        {{ $data->phone }}
-                                                    </p>
-                                                </td>
 
-                                                <td>
-                                                    @if ($data->registered == 1)
-                                                        <span
-                                                            class="badge badge-sm bg-gradient-success ">Registered</span>
+                                            <td>
+                                                <p class="text-xs font-weight-bold mb-0">
+                                                    #{{ $data->id }}
+                                                </p>
+                                            </td>
+
+                                            <td>
+                                                <p class="text-xs font-weight-bold mb-0">
+                                                    @if ($data->user_id)
+                                                    @foreach ($users as $user)
+                                                    @if ($user->id == $data->user_id)
+                                                    {{ $user->first_name }} {{ $user->last_name }}
+                                                    @endif
+                                                    @endforeach
                                                     @else
-                                                        <span class="badge badge-sm bg-gradient-danger ">Not
-                                                            Registered</span>
-                                                    @endif
-                                                </td>
+                                                <p class="text-xs font-weight-bold mb-0">
+                                                    {{ $data->first_name }} {{ $data->last_name }}
+                                                </p>
+                                                @endif
+                                                </p>
+                                            </td>
+                                            {{--
+                                            <td>
+                                                @if ($data->address !== null)
+                                                <i class="fa fa-check text-success"></i>
+                                                @else
+                                                <i class="fa fa-times text-danger"></i>
+                                                @endif
+                                            </td> --}}
 
-                                                <td>
-                                                    @if ($data->paid == 1)
-                                                        <span class="badge badge-sm bg-gradient-success ">Paid</span>
-                                                    @else
-                                                        <span class="badge badge-sm bg-gradient-danger ">Not Paid</span>
-                                                    @endif
-                                                </td>
+                                            <td>
+                                                <p class="text-xs font-weight-bold mb-0">
+                                                    {{ $data->user->email }}
+                                                </p>
+                                            </td>
 
-                                                <td>
-                                                    @if ($data->method == 1)
-                                                        <span class="badge badge-sm bg-gradient-success">Cash</span>
-                                                    @else
-                                                        <span class="badge badge-sm bg-gradient-danger ">Points</span>
-                                                    @endif
-                                                </td>
+                                            <td>
+                                                <p class="text-xs font-weight-bold mb-0">
+                                                    {{ $data->user->phone }}
+                                                </p>
+                                            </td>
 
-                                                <td>
-                                                    @if ($data->delivered == 1)
-                                                        <span
-                                                            class="badge badge-sm bg-gradient-success ">Delivered</span>
-                                                    @else
-                                                        <span class="badge badge-sm bg-gradient-danger ">Not
-                                                            Delivered</span>
-                                                    @endif
-                                                </td>
+                                            {{-- <td>
+                                                @if ($data->registered == 1)
+                                                <span class="badge badge-sm bg-gradient-success ">Registered</span>
+                                                @else
+                                                <span class="badge badge-sm bg-gradient-danger ">Not
+                                                    Registered</span>
+                                                @endif
+                                            </td> --}}
 
+                                            {{-- <td>
+                                                @if ($data->paid == 1)
+                                                <span class="badge badge-sm bg-gradient-success ">Paid</span>
+                                                @else
+                                                <span class="badge badge-sm bg-gradient-danger ">Not Paid</span>
+                                                @endif
+                                            </td>
 
+                                            <td>
+                                                @if ($data->method == 1)
+                                                <span class="badge badge-sm bg-gradient-success">Cash</span>
+                                                @else
+                                                <span class="badge badge-sm bg-gradient-danger ">Points</span>
+                                                @endif
+                                            </td>
 
-                                                <td>
-                                                    @if ($data->promo != null)
-                                                        <p class="text-xs font-weight-bold mb-0">
-                                                            {{ $data->promo }}
-                                                        </p>
-                                                    @else
-                                                        <i class="fa fa-times text-danger"></i>
-                                                    @endif
-                                                </td>
-
-                                                <td>
-                                                    <p class="text-xs font-weight-bold mb-0">
-                                                        {{ $data->total_pts }}
-                                                    </p>
-                                                </td>
-
-                                                <td>
-                                                    <p class="text-xs font-weight-bold mb-0">
-                                                        {{ $data->total_lbp }}
-                                                    </p>
-                                                </td>
-
-                                                <td>
-                                                    <p class="text-xs font-weight-bold mb-0">
-                                                        {{ $data->total_usd }}
-                                                    </p>
-                                                </td>
-
-                                                <td class="align-middle">
-                                                    <a href="{{ url('admin/view_order', $data->id) }}"
-                                                        class="text-primary font-weight-bold text-xs"
-                                                        data-toggle="tooltip">
-                                                        View
-                                                        <i class="bi bi-eye"></i>
-                                                    </a>
-                                                </td>
-
-                                                @php
-                                                    $start_date = session('selected_date_range.0', 0);
-                                                    $end_date = session('selected_date_range.1', 0);
-                                                @endphp
+                                            <td>
+                                                @if ($data->delivered == 1)
+                                                <span class="badge badge-sm bg-gradient-success ">Delivered</span>
+                                                @else
+                                                <span class="badge badge-sm bg-gradient-danger ">Not
+                                                    Delivered</span>
+                                                @endif
+                                            </td>
 
 
-                                                <td class="align-middle">
-                                                    <a href="{{ url('admin/' . $start_date . '/' . $end_date . '/update_order/' . $data->id) }}"
-                                                        class="text-success font-weight-bold text-xs"
-                                                        data-toggle="tooltip">
-                                                        Update
-                                                        <i class="bi bi-pen"></i>
-                                                    </a>
-                                                </td>
 
-                                                <td class="align-middle">
-                                                    <a href="{{ url('admin/delete_order', $data->id) }}"
-                                                        class="text-danger font-weight-bold text-xs"
-                                                        data-toggle="tooltip" data-original-title="Edit order"
-                                                        onclick="return confirm('Are you sure you want to delete this order?')">
-                                                        Delete
-                                                        <i class="bi bi-trash"></i>
-                                                    </a>
-                                                </td>
-                                            </tr>
+                                            <td>
+                                                @if ($data->promo != null)
+                                                <p class="text-xs font-weight-bold mb-0">
+                                                    {{ $data->promo }}
+                                                </p>
+                                                @else
+                                                <i class="fa fa-times text-danger"></i>
+                                                @endif
+                                            </td>
+
+                                            <td>
+                                                <p class="text-xs font-weight-bold mb-0">
+                                                    {{ $data->total_pts }}
+                                                </p>
+                                            </td> --}}
+
+                                            {{-- <td>
+                                                <p class="text-xs font-weight-bold mb-0">
+                                                    {{ $data->total_lbp }}
+                                                </p>
+                                            </td> --}}
+
+                                            <td>
+                                                <p class="text-xs font-weight-bold mb-0">
+                                                    {{ $data->total_paid }}
+                                                </p>
+                                            </td>
+
+                                            <td class="align-middle">
+                                                <a href="{{ url('admin/view_order', $data->id) }}"
+                                                    class="text-primary font-weight-bold text-xs" data-toggle="tooltip">
+                                                    View
+                                                    <i class="bi bi-eye"></i>
+                                                </a>
+                                            </td>
+
+
+
+                                       
+
+                                            <td class="align-middle">
+                                                <a href="{{ url('admin/delete_order', $data->id) }}"
+                                                    class="text-danger font-weight-bold text-xs" data-toggle="tooltip"
+                                                    data-original-title="Edit order"
+                                                    onclick="return confirm('Are you sure you want to delete this order?')">
+                                                    Delete
+                                                    <i class="bi bi-trash"></i>
+                                                </a>
+                                            </td>
+                                        </tr>
                                         @empty
-                                            <tr>
-                                                <td colspan="16">
-                                                    <p class="text-xs text-center text-danger font-weight-bold mb-0">
-                                                        No Data !
-                                                    </p>
-                                                </td>
-                                            </tr>
+                                        <tr>
+                                            <td colspan="16">
+                                                <p class="text-xs text-center text-danger font-weight-bold mb-0">
+                                                    No Data !
+                                                </p>
+                                            </td>
+                                        </tr>
                                         @endforelse
                                     </tbody>
                                 </table>
-                                {{ $order->render('admin.pagination') }}
+                                {{ $orders->render('admin.pagination') }}
                             </div>
                         </div>
                     </div>

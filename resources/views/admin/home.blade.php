@@ -252,38 +252,50 @@
 
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script>
+    // Data coming from backend
+    const revenueDaily   = @json($revenueDaily ?? []);
+    const revenueMonthly = @json($revenueMonthly ?? []);
+    const chartStart     = @json($chartStart ?? null);
+    const chartEnd       = @json($chartEnd ?? null);
+
     const ctx = document.getElementById('myChart');
-    const revenueData = 0;
 
-    let dates = Object.keys(revenueData);
-    let firstDate = new Date(dates[0]);
-    let lastDate = new Date(dates[dates.length - 1]);
-    let durationInDays = (lastDate - firstDate) / (1000 * 3600 * 24);
+    // Helper: safe keys/values
+    const dailyDates = Object.keys(revenueDaily || {});
+    const hasDaily = dailyDates.length > 0;
 
-    let labelsToShow;
-    if (durationInDays > 30) {
-        // Calculate monthly revenue and show only month names
-        let monthlyRevenue = {};
-        dates.forEach(dateString => {
-            const date = new Date(dateString);
-            const monthYear = `${date.toLocaleString('en-US', { month: 'long' })} ${date.getFullYear()}`;
-            if (monthlyRevenue[monthYear]) {
-                monthlyRevenue[monthYear] += revenueData[dateString];
-            } else {
-                monthlyRevenue[monthYear] = revenueData[dateString];
-            }
-        });
-        labelsToShow = Object.keys(monthlyRevenue);
-        dataToShow = Object.values(monthlyRevenue);
+    let labelsToShow = [];
+    let dataToShow   = [];
+
+    if (!hasDaily) {
+        // No data — show an empty chart
+        labelsToShow = [];
+        dataToShow = [];
     } else {
-        // Show dates as "Month Day"
-        labelsToShow = dates.map(dateString => {
-            const date = new Date(dateString);
-            return `${date.toLocaleString('en-US', { month: 'long' })} ${date.getDate()}`;
-        });
-        dataToShow = Object.values(revenueData);
+        // Determine duration in days from first to last daily key
+        const firstDate = new Date(dailyDates[0]);
+        const lastDate  = new Date(dailyDates[dailyDates.length - 1]);
+        const durationInDays = (lastDate - firstDate) / (1000 * 3600 * 24);
+
+        if (durationInDays > 30 && Object.keys(revenueMonthly || {}).length > 0) {
+            // Use monthly series computed on backend
+            labelsToShow = Object.keys(revenueMonthly).map(ym => {
+                const [y, m] = ym.split('-');
+                const d = new Date(Number(y), Number(m) - 1, 1);
+                return d.toLocaleString('en-US', { month: 'long', year: 'numeric' });
+            });
+            dataToShow = Object.values(revenueMonthly);
+        } else {
+            // Use daily series
+            labelsToShow = dailyDates.map(ds => {
+                const d = new Date(ds);
+                return `${d.toLocaleString('en-US', { month: 'long' })} ${d.getDate()}`;
+            });
+            dataToShow = dailyDates.map(ds => revenueDaily[ds]);
+        }
     }
 
+    // Init Chart.js (make sure Chart.js is included on the page)
     new Chart(ctx, {
         type: 'line',
         data: {
@@ -291,19 +303,24 @@
             datasets: [{
                 label: 'Revenue',
                 data: dataToShow,
-                borderWidth: 1
+                borderWidth: 2,
+                tension: 0.25,
+                pointRadius: 2
             }]
         },
         options: {
+            plugins: {
+                tooltip: { mode: 'index', intersect: false },
+                legend: { display: true }
+            },
+            interaction: { mode: 'index', intersect: false },
             scales: {
-                y: {
-                    beginAtZero: true
-                }
+                x: { ticks: { autoSkip: true, maxRotation: 0 } },
+                y: { beginAtZero: true }
             }
         }
     });
 </script>
-
 
 
 
