@@ -37,7 +37,7 @@ class CmsController extends Controller
     ")
             ->value('profit');; // Sum all transaction amounts created today
         $month = Carbon::now()->month; // this months number
-        $revenue_this_month = \DB::table('checkouts')
+        $revenue_this_month = DB::table('checkouts')
             ->leftJoin('products', 'checkouts.product_id', '=', 'products.id')
             ->leftJoin('specialties', 'checkouts.specialty_id', '=', 'specialties.id')
             ->whereMonth('checkouts.created_at', $month) // ✅ qualify column
