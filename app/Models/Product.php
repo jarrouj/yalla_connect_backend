@@ -15,6 +15,8 @@ class Product extends Model
         'image',
         'code',
         'subcategory_id',
+        'purchase_price',
+        'duration'
     ];
 
     // Relationship with Category

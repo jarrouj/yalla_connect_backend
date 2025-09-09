@@ -51,9 +51,17 @@
                                             <th
                                                 class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
                                                 Voucher Code</th>
+
+                                                     <th
+                                                class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
+                                               Purchase Price</th>
                                             <th
                                                 class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
-                                                Price</th>
+                                               Selling Price</th>
+
+                                                 <th
+                                                class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
+                                               Duration</th>
                                             <th
                                                 class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
                                                 Category</th>
@@ -128,11 +136,21 @@
                                             </td>
 
 
+                                               <!--Purchase Price -->
+                                            <td>
+                                                <p class="text-xs font-weight-bold mb-0">${{
+                                                    number_format($product->purchase_price, 2) }}</p>
+                                            </td>
 
-                                            <!-- Price -->
+                                            <!--Selling Price -->
                                             <td>
                                                 <p class="text-xs font-weight-bold mb-0">${{
                                                     number_format($product->price, 2) }}</p>
+                                            </td>
+
+                                             <!-- Duration -->
+                                            <td>
+                                                <p class="text-xs font-weight-bold mb-0">{{ $product->duration ?? 'N/A' }}</p>
                                             </td>
 
                                             <!-- Parent Category -->

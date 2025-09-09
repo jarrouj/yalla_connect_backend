@@ -21,6 +21,7 @@ class SpecialtyController extends Controller
             'description' => 'nullable|string',
             'image' => 'nullable|image|max:2048',
             'price' => 'required|numeric|min:0',
+            'purchase_price' => 'required|numeric|min:0',
             'is_active' => 'boolean',
         ]);
 
@@ -32,6 +33,7 @@ class SpecialtyController extends Controller
             'time' => $request->time ?? '', // like 30 days
             'image' => $imagePath,
             'price' => $request->price,
+            'purchase_price' => $request->purchase_price,
             'is_active' => $request->is_active ?? true,
         ]);
 
@@ -48,6 +50,7 @@ class SpecialtyController extends Controller
             'description' => 'nullable|string',
             'image' => 'nullable|image|max:2048',
             'price' => 'required|numeric|min:0',
+            'purchase_price' => 'required|numeric|min:0',
             'is_active' => 'boolean',
         ]);
 
@@ -61,6 +64,7 @@ class SpecialtyController extends Controller
             'time' => $request->time ?? '', // like 30 days
             'image' => $specialty->image,
             'price' => $request->price,
+            'purchase_price' => $request->purchase_price,
             'is_active' => $request->is_active ?? true,
         ]);
 

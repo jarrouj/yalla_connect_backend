@@ -17,6 +17,7 @@ return new class extends Migration
             $table->text('description')->nullable();
             $table->string('image');
             $table->double('price')->default(0.00);
+            $table->double('purchase_price')->default(0.00);
             $table->string('time');
             $table->boolean('is_active')->default(true);
             $table->timestamps();

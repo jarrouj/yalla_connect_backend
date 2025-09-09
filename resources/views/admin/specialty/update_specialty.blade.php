@@ -46,6 +46,13 @@
                         </div>
                     @endif
 
+                       <!-- Price -->
+                    <div class="mb-3">
+                        <label class="form-label">Purchase Price</label>
+                        <input type="number" name="purchase_price" class="form-control" step="0.01" min="0"
+                            value="{{ $data->purchase_price }}" required>
+                    </div>
+
                     <!-- Price -->
                     <div class="mb-3">
                         <label class="form-label">Price</label>

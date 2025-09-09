@@ -19,6 +19,7 @@ return new class extends Migration
             $table->string('title');
             $table->text('description')->nullable();
             $table->decimal('price', 10, 2)->default(0);
+            $table->decimal('purchase_price', 10, 2)->default(0);
             $table->string('image')->nullable(); // stores filename
             $table->timestamps();
         });

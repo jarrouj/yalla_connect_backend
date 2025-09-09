@@ -5,7 +5,7 @@
 </a>
 
 <!-- Edit Product Modal -->
-<div class="modal fade" id="editProductModal{{ $product->id }}" tabindex="-1"  
+<div class="modal fade" id="editProductModal{{ $product->id }}" tabindex="-1"
     aria-labelledby="editProductModalLabel{{ $product->id }}" aria-hidden="true">
     <div class="modal-dialog modal-xl">
         <div class="modal-content">
@@ -122,11 +122,24 @@
                             @endif
                         </div>
 
-                        <!-- Price -->
+                           <!--Purchase Price -->
                         <div class="col-md-2">
-                            <label class="form-label">Price ($)</label>
+                            <label class="form-label">Purchase Price ($)</label>
+                            <input type="number" name="purchase_price" step="0.01" class="form-control" required
+                                value="{{ $product->purchase_price }}">
+                        </div>
+
+                        <!--Selling Price -->
+                        <div class="col-md-2">
+                            <label class="form-label">Selling Price ($)</label>
                             <input type="number" name="price" step="0.01" class="form-control" required
                                 value="{{ $product->price }}">
+                        </div>
+
+                        <div class="col-md-2">
+                            <label class="form-label">Duration</label>
+                            <input type="text" name="duration" class="form-control" required
+                                value="{{ $product->duration }}">
                         </div>
 
 

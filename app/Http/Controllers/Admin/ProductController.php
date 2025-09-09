@@ -51,6 +51,8 @@ class ProductController extends Controller
             'category_id'    => 'required|exists:categories,id',
             'subcategory_id' => 'required|exists:subcategories,id',
             'price'          => 'required|numeric|min:0',
+            'purchase_price' => 'required|numeric|min:0',
+            'duration'      => 'required|string|max:255',
             'image'          => 'nullable|image|mimes:jpg,jpeg,png|max:2048',
         ];
 
@@ -84,6 +86,8 @@ class ProductController extends Controller
             'title'          => $validated['title'],
             'description'    => $validated['description'] ?? null,
             'price'          => $validated['price'],
+            'purchase_price' => $validated['purchase_price'],
+            'duration'       => $validated['duration'],
             'image'          => $imageName,              // store filename; or switch to Storage later
             'type'           => $subcategory->name,      // if you still want to keep this
         ]);
@@ -120,6 +124,8 @@ class ProductController extends Controller
             'title'          => 'required|string|max:255',
             'description'    => 'nullable|string',
             'price'          => 'required|numeric|min:0',
+            'purchase_price' => 'required|numeric|min:0',
+            'duration'       => 'required|string|max:255',
             'image'          => 'nullable|image|mimes:jpg,jpeg,png|max:2048',
         ];
 
@@ -151,6 +157,8 @@ class ProductController extends Controller
             'title'          => $request->title,
             'description'    => $request->description,
             'price'          => $request->price,
+            'purchase_price' => $request->purchase_price,
+            'duration'       => $request->duration,
             'image'          => $product->image ?? null,
             'type'           => $newSubcategory->name,
         ]);

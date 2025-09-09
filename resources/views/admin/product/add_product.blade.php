@@ -85,11 +85,25 @@
                         </div>
                     </div>
 
-                    <!-- Price -->
+                      <!--Purchase Price -->
                     <div class="mb-3">
-                        <label class="form-label">Price</label>
+                        <label class="form-label">Purchase Price</label>
+                        <input type="number" name="purchase_price" step="0.01" class="form-control" required>
+                    </div>
+
+
+                    <!--Selling Price -->
+                    <div class="mb-3">
+                        <label class="form-label">Selling Price</label>
                         <input type="number" name="price" step="0.01" class="form-control" required>
                     </div>
+
+                      <!-- Duration -->
+                    <div class="mb-3">
+                        <label class="form-label">Duration</label>
+                        <input type="text" name="duration" class="form-control" required>
+                    </div>
+
 
                 </div>
 

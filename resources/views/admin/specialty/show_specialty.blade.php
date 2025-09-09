@@ -59,10 +59,16 @@
 
                                                 Specialty Description
                                             </th>
+
+                                              <th
+                                                class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
+
+                                               Purchase Price
+                                            </th>
                                             <th
                                                 class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
 
-                                                Price
+                                                Selling Price
                                             </th>
                                             <th
                                                 class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
@@ -101,6 +107,12 @@
                                             <td>
                                                 <p class="text-xs font-weight-bold mb-0">
                                                     {{ $data->description }}
+                                                </p>
+                                            </td>
+
+                                              <td class="align-middle">
+                                                <p class="text-xs font-weight-bold mb-0">
+                                                    ${{ number_format($data->purchase_price, 2) }}
                                                 </p>
                                             </td>
 
