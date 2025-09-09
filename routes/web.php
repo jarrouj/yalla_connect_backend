@@ -1,17 +1,18 @@
 <?php
 
-use App\Http\Controllers\Admin\AddBalanceController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Admin\CmsController;
+use App\Http\Controllers\PromoCodeController;
 use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\Admin\OfferController;
+use App\Http\Controllers\Admin\OrderController;
 use App\Http\Controllers\Admin\ProductController;
 use App\Http\Controllers\Admin\CategoryController;
-use App\Http\Controllers\Admin\OrderController;
-use App\Http\Controllers\Admin\PromoCodesController;
 use App\Http\Controllers\Admin\SpecialtyController;
+use App\Http\Controllers\Admin\AddBalanceController;
+use App\Http\Controllers\Admin\PromoCodesController;
 use App\Http\Controllers\Admin\SubcategoryController;
-use App\Http\Controllers\PromoCodeController;
+use App\Http\Controllers\Admin\TransactionController;
 
 Route::redirect('/', '/login');
 
@@ -90,6 +91,9 @@ Route::prefix('/admin')->middleware(['auth', 'checkUserType'])->group(function (
     Route::get('/show_order', [OrderController::class, 'show_orders'])->name('admin.orders');
     Route::get('/delete_order/{id}', [OrderController::class, 'delete_order']);
 
+    // {{ Transactions }}
+    Route::get('/show_transactions', [TransactionController::class, 'show_transactions']);
+    Route::get('/delete_transaction/{id}', [TransactionController::class, 'delete_transaction']);
 
     // // {{ Social }}
     // Route::get('/show_social',[SocialController::class,'show_social']);
