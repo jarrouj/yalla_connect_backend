@@ -67,7 +67,7 @@ Route::prefix('/admin')->middleware(['auth', 'checkUserType'])->group(function (
     Route::get('/show_specialties', [SpecialtyController::class, 'index']);
     Route::post('/add_specialty', [SpecialtyController::class, 'store']);
     Route::post('/update_specialty/{id}', [SpecialtyController::class, 'update']);
-    Route::delete('/delete_specialty/{id}', [SpecialtyController::class, 'destroy']);
+    Route::get('/delete_specialty/{id}', [SpecialtyController::class, 'destroy']);
 
     // {{ Offer }}
     Route::get('/show_offers', [OfferController::class, 'show_offers']);

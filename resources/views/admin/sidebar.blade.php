@@ -117,7 +117,7 @@
                     href="{{ url('/admin/show_user_balance') }}">
                     <div
                         class="icon icon-shape icon-sm border-radius-md text-center me-2 d-flex align-items-center justify-content-center">
-                        <i class="bi bi-box-seam-fill text-danger text-sm opacity-10"></i>
+                        <i class="bi bi-cash-coin text-danger text-sm opacity-10"></i>
                     </div>
                     <span class="nav-link-text ms-1">Add Balance</span>
                 </a>
@@ -140,7 +140,7 @@
                     href="{{ url('/admin/show_offers') }}">
                     <div
                         class="icon icon-shape icon-sm border-radius-md text-center me-2 d-flex align-items-center justify-content-center">
-                        <i class="bi bi-box-seam-fill text-danger text-sm opacity-10"></i>
+                        <i class="bi bi-percent text-primary text-sm opacity-10"></i>
                     </div>
                     <span class="nav-link-text ms-1">Offers</span>
                 </a>
@@ -152,7 +152,7 @@
                     href="{{ url('/admin/show_promo') }}">
                     <div
                         class="icon icon-shape icon-sm border-radius-md text-center me-2 d-flex align-items-center justify-content-center">
-                        <i class="bi bi-box-seam-fill text-danger text-sm opacity-10"></i>
+                        <i class="bi bi-qr-code text-danger text-sm opacity-10"></i>
                     </div>
                     <span class="nav-link-text ms-1">Promo Codes</span>
                 </a>
@@ -163,7 +163,7 @@
                     href="{{ url('/admin/show_transactions') }}">
                     <div
                         class="icon icon-shape icon-sm border-radius-md text-center me-2 d-flex align-items-center justify-content-center">
-                        <i class="bi bi-box-seam-fill text-danger text-sm opacity-10"></i>
+                        <i class="bi bi-receipt text-primary text-sm opacity-10"></i>
                     </div>
                     <span class="nav-link-text ms-1">Transactions</span>
                 </a>

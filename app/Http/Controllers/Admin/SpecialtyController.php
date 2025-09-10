@@ -2,9 +2,9 @@
 
 namespace App\Http\Controllers\Admin;
 
-use App\Http\Controllers\Controller;
 use App\Models\Specialty;
 use Illuminate\Http\Request;
+use App\Http\Controllers\Controller;
 
 class SpecialtyController extends Controller
 {
@@ -38,7 +38,7 @@ class SpecialtyController extends Controller
         ]);
 
 
-        return redirect()->back()->with('success', 'Specialty added successfully.');
+        return redirect()->back()->with('message', 'Specialty added successfully.');
     }
 
     public function update(Request $request, $id)
@@ -68,13 +68,13 @@ class SpecialtyController extends Controller
             'is_active' => $request->is_active ?? true,
         ]);
 
-        return redirect()->back()->with('success', 'Specialty updated successfully.');
+        return redirect()->back()->with('message', 'Specialty updated successfully.');
     }
 
     public function destroy($id)
     {
         $specialty = Specialty::findOrFail($id);
         $specialty->delete();
-        return redirect()->back()->with('success', 'Specialty deleted successfully.');
+        return redirect()->back()->with('message', 'Specialty deleted successfully.');
     }
 }
