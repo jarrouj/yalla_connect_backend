@@ -13,6 +13,7 @@ use App\Http\Controllers\Admin\AddBalanceController;
 use App\Http\Controllers\Admin\PromoCodesController;
 use App\Http\Controllers\Admin\SubcategoryController;
 use App\Http\Controllers\Admin\TransactionController;
+use App\Http\Controllers\Admin\CurrencyConverterController;
 
 Route::redirect('/', '/login');
 
@@ -94,6 +95,10 @@ Route::prefix('/admin')->middleware(['auth', 'checkUserType'])->group(function (
     // {{ Transactions }}
     Route::get('/show_transactions', [TransactionController::class, 'show_transactions']);
     Route::get('/delete_transaction/{id}', [TransactionController::class, 'delete_transaction']);
+
+    // {{ Currecy Converter }}
+    Route::get('/settings' , [CurrencyConverterController::class , 'show_dollar_price']);
+    Route::get('/update_dollar_price' , [CurrencyConverterController::class , 'update_dollar_price']);
 
     // // {{ Social }}
     // Route::get('/show_social',[SocialController::class,'show_social']);
