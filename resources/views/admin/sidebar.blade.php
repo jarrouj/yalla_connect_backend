@@ -407,8 +407,8 @@
                     <ul class="navbar-nav">
 
                         <li class="nav-item">
-                            <a class="nav-link rounded-3 {{ 'admin/show_general' == request()->path() ? 'main-color' : '' }}"
-                                href="{{ url('/admin/show_general') }}">
+                            <a class="nav-link rounded-3 {{ 'admin/settings' == request()->path() ? 'main-color' : '' }}"
+                                href="{{ url('/admin/settings') }}">
                                 <div
                                     class="icon icon-shape icon-sm border-radius-md text-center me-2 d-flex align-items-center justify-content-center">
                                     <i class="bi bi-sliders text-primary text-sm opacity-10"></i>

@@ -8,18 +8,25 @@ use App\Http\Controllers\Controller;
 
 class CurrencyConverterController extends Controller
 {
-    public function show_dollar_price()
+    public function show()
     {
-        $dollar_price = CurrencyConverter::find(1)->get();
-        return view('admin.settings.settings' , compact('dollar_price'));
+        $converter = CurrencyConverter::firstOrCreate(['id' => 1], [
+            'dollar_price' => 0,
+        ]);
+
+        return view('admin.settings.settings', compact('converter'));
     }
 
-    public function update_dollar_price(Request $request){
+    // Update the dollar price
+    public function update(Request $request)
+    {
+        $validated = $request->validate([
+            'dollar_price' => ['required', 'numeric', 'min:0'],
+        ]);
 
-        $dollar_price_update = CurrencyConverter::find(1);
-        $dollar_price_update->dollar_price = $request->dollar_price;
-
-        $dollar_price_update->save();
+        $converter = CurrencyConverter::firstOrCreate(['id' => 1]);
+        $converter->dollar_price = $validated['dollar_price'];
+        $converter->save();
 
         return redirect()->back()->with('message', 'Dollar Price Updated Successfully');
     }

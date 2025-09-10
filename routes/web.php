@@ -97,8 +97,11 @@ Route::prefix('/admin')->middleware(['auth', 'checkUserType'])->group(function (
     Route::get('/delete_transaction/{id}', [TransactionController::class, 'delete_transaction']);
 
     // {{ Currecy Converter }}
-    Route::get('/settings' , [CurrencyConverterController::class , 'show_dollar_price']);
-    Route::get('/update_dollar_price' , [CurrencyConverterController::class , 'update_dollar_price']);
+Route::get('/settings', [CurrencyConverterController::class, 'show'])
+    ->name('admin.settings.currency');
+
+Route::post('/settings/currency', [CurrencyConverterController::class, 'update'])
+    ->name('admin.settings.currency.update');
 
     // // {{ Social }}
     // Route::get('/show_social',[SocialController::class,'show_social']);
