@@ -44,7 +44,7 @@ Route::get('/subcategories', [ApiController::class, 'getAllSubcategories']);
 Route::middleware('auth:sanctum')->get('/products', [ApiController::class, 'getAllProducts']);
 Route::middleware('auth:sanctum')->get('/specialties', [ApiController::class, 'getAllSpecialties']);
 Route::middleware('auth:sanctum')->get('/products/subcategory/{id}', [ApiController::class, 'getProductsBySubcategory']);
-Route::get('/offers', [ApiController::class, 'getAllOffers']);
+Route::middleware('auth:sanctum')->get('/offers', [ApiController::class, 'getAllOffers']);
 Route::middleware('auth:sanctum')->group(function () {
     Route::post('/promo/apply', [PromoCodeController::class, 'apply']);
 });
